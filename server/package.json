@@ -12,15 +12,19 @@
     "orders",
     "bookshelf"
   ],
-  "authors": [
+  "contributors": [
     {
-      "name": "Ruben Cordeiro"
+      "name": "Ruben Cordeiro",
+      "email": "ruben.cordeiro.eng@gmail.com",
+      "url": "https://github.com/RubenCordeiro"
     },
     {
-      "name": "Duarte Duarte"
+      "name": "Duarte Duarte",
+      "email": "dnpd.dd@gmail.com",
+      "url": "https://github.com/DDuarte"
     }
   ],
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "config": "~1.12.0",
     "hapi": "~8.4.0",
