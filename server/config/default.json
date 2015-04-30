@@ -1,0 +1,16 @@
+{
+  "database": {
+    "name": "bookshelf",
+    "username": "postgres",
+    "password": "admin",
+    "options": {
+      "dialect": "postgres",
+      "host": "localhost",
+      "port": 5432,
+      "define": {
+        "timestamps": false
+      }
+    }
+  },
+  "jwt": ":D'TH=;F g}zKuM]B.N[U5|Cf!]vuF"
+}

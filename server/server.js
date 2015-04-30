@@ -6,6 +6,9 @@ server.connection({
     port: 8000
 });
 
+// sequelize models
+require('./models');
+
 // Add the route
 server.route({
     method: 'GET',
