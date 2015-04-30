@@ -1,3 +1,5 @@
+/// <reference path="../typings/hapi/hapi.d.ts""/>
+
 var Hapi = require('hapi');
 
 // Create a server with a host and port
