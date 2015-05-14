@@ -1,5 +1,5 @@
 {
-  "name": "server-bookshelf",
+  "name": "server-bookshelf-store",
   "version": "0.0.1",
   "description": "Bookshelf sale platform server",
   "main": "server.js",
