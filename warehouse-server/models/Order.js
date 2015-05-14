@@ -13,7 +13,6 @@ module.exports = function(sequelize, DataTypes) {
         },
         DispatchDate: {
             type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW,
             allowNull: true,
             required: true
         }

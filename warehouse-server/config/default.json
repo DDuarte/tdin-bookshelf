@@ -12,5 +12,6 @@
       }
     }
   },
-  "jwt": ":D'TH=;F g}zKuM]B.N[U5|Cf!]vuF"
+  "jwt": ":D'TH=;F g}zKuM]B.N[U5|Cf!]vuF",
+  "messageQueue": "amqp://localhost:5672"
 }

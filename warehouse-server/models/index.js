@@ -27,7 +27,15 @@ models.forEach(function(model) {
 
 // describe relationships
 (function(m) {
-    m.Book.belongsToMany(m.Order);
+    m.Book.hasMany(m.Order, {
+        as: 'OrderBooks',
+        through: 'OrderBooks'
+    });
+    
+    m.Order.hasMany(m.Book, {
+        as: 'OrderBooks',
+        through: 'OrderBooks'
+    });
     
     m.Order.belongsTo(m.Employee, {
         as: 'dispatcher'
