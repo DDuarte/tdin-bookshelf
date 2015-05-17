@@ -22,12 +22,17 @@ server.register({
     }
 });
 
-// Add the route
+// routes
+require('./routes')(server);
+
+// Serve static files
 server.route({
     method: 'GET',
-    path:'/',
-    handler: function (request, reply) {
-        reply('hello world');
+    path: '/{name*}',
+    handler: {
+        directory: {
+            path: 'public/app'
+        }
     }
 });
 
