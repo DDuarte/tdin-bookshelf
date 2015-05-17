@@ -28,12 +28,18 @@ models.forEach(function(model) {
 // describe relationships
 (function(m) {
 
-    m.Order.hasOne(m.Customer);
-    m.Order.hasMany(m.Book, {
-        through: {
-            quantity: { type: Sequelize.INTEGER }
-        }
+    m.Book.hasMany(m.Order, {
+        as: 'OrderBooks',
+        through: 'OrderBooks'
     });
+
+    m.Order.hasMany(m.Book, {
+        as: 'OrderBooks',
+        through: 'OrderBooks'
+    });
+
+    m.Customer.hasMany(m.Order);
+
 })(module.exports);
 
 // sync models

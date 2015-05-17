@@ -11,6 +11,10 @@ module.exports = function(sequelize, DataTypes) {
             },
             required: true
         },
+        password: {
+            type: DataTypes.STRING,
+            required: true
+        },
         date: {
             type: DataTypes.DATE
         },
