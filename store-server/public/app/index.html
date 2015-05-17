@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en" ng-app="BookshelfApp">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="icon" type="image/png" href="../assets/img/favicon.ico">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+
+    <title>Ecommerce - Get Shit Done Kit Pro by Creative Tim</title>
+
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
+    <meta name="viewport" content="width=device-width"/>
+
+    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet"/>
+    <link href="css/gsdk.css" rel="stylesheet"/>
+    <link href="css/examples.css" rel="stylesheet"/>
+
+    <!--     Fonts and icons     -->
+    <link href="css/pe-icon-7-stroke.css" rel="stylesheet"/>
+
+    <!--     Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Grand+Hotel' rel='stylesheet' type='text/css'>
+    <link href="css/pe-icon-7-stroke.css" rel="stylesheet" />
+
+</head>
+
+<body class="ecommerce" ui-view>
+
+</body>
+
+<!-- external libraries -->
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap.js"></script>
+
+<!-- Application code -->
+<script src="app.js"></script>
+<script src="root/root.js"></script>
+<script src="home/home.js"></script>
+
+<script type="text/javascript">
+    var big_image;
+    var transparent = true;
+
+    $().ready(function () {
+        responsive = $(window).width();
+
+        $(window).on('scroll', checkScroll);
+
+        if (responsive >= 768) {
+            big_image = $('.parallax-image').find('img');
+
+            $(window).on('scroll', function () {
+                parallax();
+                checkScroll();
+            });
+        }
+
+    });
+
+    function checkScroll() {
+        if ($(document).scrollTop() > 260) {
+            if (transparent) {
+                transparent = false;
+                $('nav[role="navigation"]').removeClass('navbar-transparent').addClass('navbar-default');
+            }
+        } else {
+            if (!transparent) {
+                transparent = true;
+                $('nav[role="navigation"]').addClass('navbar-transparent').removeClass('navbar-default');
+            }
+        }
+    }
+
+    var parallax = function () {
+        var current_scroll = $(this).scrollTop();
+
+        oVal = ($(window).scrollTop() / 3);
+        big_image.css('top', oVal);
+    };
+
+</script>
+</html>
+
+
