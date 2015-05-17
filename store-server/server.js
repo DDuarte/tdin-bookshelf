@@ -8,8 +8,19 @@ server.connection({
     port: 8000
 });
 
-// sequelize models
-require('./models');
+// Plugins
+server.register({
+    register: require('hapi-swagger'),
+    options: {
+        apiVersion: require('./package').version
+    }
+}, function (err) {
+    if (err) {
+        server.log(['error'], 'hapi-swagger load error: ' + err);
+    } else {
+        server.log(['start'], 'hapi-swagger interface loaded');
+    }
+});
 
 // Add the route
 server.route({
