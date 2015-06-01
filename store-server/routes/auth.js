@@ -50,18 +50,34 @@ module.exports = function (server) {
                 }
             },
             handler: function (request, reply) {
-                Models.Customer.create({
-                    email: request.payload.email,
-                    password: SHA256(request.payload.password).toString(CryptoJS.enc.Base64)
+
+                Models.Customer.findOne({
+                    where: {
+                        email: request.payload.email
+                    }
                 })
-                .then(function(NewCustomer) {
-                    var ret = _.omit(NewCustomer, 'password');
-                    ret.token = _.set(NewCustomer, 'token', Jwt.sign(ret, privateKey));
-                    return reply(ret);
+                .then(function(Customer) {
+
+                    if (Customer)
+                        return reply(Boom.badRequest("Customer already exists"));
+
+                    Models.Customer.create({
+                        email: request.payload.email,
+                        password: SHA256(request.payload.password).toString(CryptoJS.enc.Base64)
+                    })
+                    .then(function(NewCustomer) {
+                        var ret = _.omit(NewCustomer.dataValues, 'password');
+                        ret = _.set(ret, 'token', Jwt.sign(ret, privateKey));
+                        return reply(ret);
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                        return reply(Boom.badImplementation('Internal server error'));
+                    });
                 })
                 .catch(function(error) {
-                        console.log(error);
-                    return reply(Boom.badImplementation('Internal server error'));
+                    console.log("Error:", error);
+                    return reply(Boom.badImplementation("Internal server error"));
                 });
             }
         }
@@ -74,8 +90,8 @@ module.exports = function (server) {
             tags: ['api'],
             validate: {
                 payload: {
-                    email: Joi.string().email(),
-                    password: Joi.string()
+                    email: Joi.string().email().required(),
+                    password: Joi.string().required()
                 }
             },
             handler: function (request, reply) {
@@ -84,8 +100,11 @@ module.exports = function (server) {
                     password: SHA256(request.payload.password).toString(CryptoJS.enc.Base64)
                 })
                 .then(function(Customer) {
-                    var ret = _.omit(Customer, 'password');
-                    ret.token = _.set(Customer, 'token', Jwt.sign(ret, privateKey));
+                    if (!Customer)
+                        return reply(Boom.badRequest("Invalid email and/or password"));
+
+                    var ret = _.omit(Customer.dataValues, 'password');
+                    ret = _.set(ret, 'token', Jwt.sign(ret, privateKey));
                     return reply(ret);
                 })
                 .catch(function(error) {
