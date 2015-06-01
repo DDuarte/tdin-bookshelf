@@ -1,0 +1,52 @@
+<div tabindex="-1" role="dialog">
+    <div class="modal-content" ng-if="loginMode">
+        <div class="modal-header">
+            <h4 class="modal-title text-center">Login</h4>
+
+            <p class="text-center" style="color: red;">{{authError}}</p>
+        </div>
+        <div class="modal-body">
+            <form name="loginForm">
+                <div class="form-group">
+                    <input type="email" ng-model="login.email" placeholder="Email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" ng-model="login.password" placeholder="Password" class="form-control" required>
+                </div>
+                <button ng-click="login()" type="button" ng-disabled="loginForm.$invalid"
+                        class="btn btn-info btn-fill btn-block"> Login
+                </button>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <span class="text-muted">Looking <a ng-click="switchLoginMode()">to create an account</a> ?</span>
+        </div>
+    </div>
+    <div class="modal-content" ng-if="!loginMode">
+        <div class="modal-header">
+            <h4 class="modal-title text-center">Register</h4>
+
+            <p class="text-center" style="color: red;">{{authError}}</p>
+        </div>
+        <div class="modal-body">
+            <form name="registerForm">
+                <div class="form-group">
+                    <input type="text" ng-model="register.email" placeholder="Email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="password" ng-model="register.password" placeholder="Password" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="password" ng-model="register.password2" placeholder="Password Confirmation"
+                           class="form-control">
+                </div>
+                <button type="button" ng-disabled="registerForm.$invalid || register.password != register.password2" ng-click="register()"
+                        class="btn btn-info btn-fill btn-block"> Register
+                </button>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <span class="text-muted">Looking <a ng-click="switchLoginMode()">to login</a> ?</span>
+        </div>
+    </div>
+</div>
