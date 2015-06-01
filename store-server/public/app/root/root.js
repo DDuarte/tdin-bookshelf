@@ -10,8 +10,21 @@ angular.module('BookshelfApp.root', ['ui.router'])
         });
     }])
 
-    .controller('RootCtrl', ['$scope', function ($scope) {
+    .controller('RootCtrl', ['$scope', '$modal', 'sessionService', 'AUTH_EVENTS', function ($scope, $modal, sessionService, AUTH_EVENTS) {
         $scope.toggled = function(open) {
             console.log('Dropdown is now: ', open);
+        };
+
+        $scope.user = sessionService.user;
+        $scope.$on(AUTH_EVENTS.loginSuccess, function() {
+            console.log("Logged in:", sessionService.user);
+            $scope.user = sessionService.user;
+        });
+
+        $scope.signin = function() {
+            var modalInstance = $modal.open({
+                templateUrl: 'login/loginDialog.html',
+                controller: 'LoginDialogCtrl'
+            });
         };
     }]);
