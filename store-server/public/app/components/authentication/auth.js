@@ -56,7 +56,13 @@ angular.module('BookshelfApp.authentication.main', ['BookshelfApp.authentication
                     email: email,
                     password: password
                 }).then(function (result) {
-                    return deferred.resolve(result.data);
+                    sessionService.createSession(result.data)
+                        .then(function (data) {
+                            deferred.resolve(data);
+                        },
+                        function (error) {
+                            deferred.reject(error);
+                        });
                 }, function (error) {
                     deferred.reject(error.data.message);
                 });
