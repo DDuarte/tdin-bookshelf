@@ -10,8 +10,8 @@ angular.module('BookshelfApp.addProduct', ['ui.router', 'BookshelfApp.root', 'ui
         });
     }])
 
-    .controller('AddProductCtrl', ['$scope', '$modal', '$q', 'BookModel', 'SweetAlert', 'lodash',
-        function ($scope, $modal, $q, BookModel, SweetAlert, lodash) {
+    .controller('AddProductCtrl', ['$scope', '$modal', '$q', 'BookModel', 'SweetAlert', '$state',
+        function ($scope, $modal, $q, BookModel, SweetAlert, $state) {
         /* sidebar hurdles */
         transparent = false;
         $('nav[role="navigation"]').removeClass('navbar-transparent').addClass('navbar-default'); // oh, no... Jquery!
@@ -53,7 +53,7 @@ angular.module('BookshelfApp.addProduct', ['ui.router', 'BookshelfApp.root', 'ui
                         confirmButtonText: "Ok",
                         closeOnConfirm: true},
                     function(){
-                        console.log("Entered:", NewBook);
+                        $state.go('root.product', {id: NewBook.id});
                     });
             })
             .catch(function(message) {
