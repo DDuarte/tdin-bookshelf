@@ -18,7 +18,7 @@ module.exports = function(sequelize, DataTypes) {
             default: 0
         },
         price: {
-            type: DataTypes.DOUBLE,
+            type: DataTypes.FLOAT,
             required: true
         },
         description: {
