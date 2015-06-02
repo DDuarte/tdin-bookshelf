@@ -11,7 +11,7 @@ angular.module('BookshelfApp.models.book', [])
                 return deferred.resolve(result.data);
             })
             .catch(function(error) {
-                return deferred.reject(error);
+                return deferred.reject(error.data.message);
             });
 
             return deferred.promise;
@@ -25,7 +25,21 @@ angular.module('BookshelfApp.models.book', [])
                     return deferred.resolve(result.data);
                 })
                 .catch(function(error) {
-                    return deferred.reject(error);
+                    return deferred.reject(error.data.message);
+                });
+
+            return deferred.promise;
+        };
+
+        this.create = function(book) {
+            var deferred = $q.defer();
+
+            $http.post(ServerConfig.baseUrl + '/books', book)
+                .then(function(result) {
+                    return deferred.resolve(result.data);
+                })
+                .catch(function(error) {
+                    return deferred.reject(error.data.message);
                 });
 
             return deferred.promise;
