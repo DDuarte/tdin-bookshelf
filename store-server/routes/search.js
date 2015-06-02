@@ -21,7 +21,6 @@ module.exports = function (server) {
             tags: ['api'],
             handler: function (request, reply) {
                 books.search(request.params.term, {
-                    key: "AIzaSyAHPVnstGWXlxNu3OLfeDa1Hhm8OxT0vRM",
                     field: request.query.field,
                     offset: 0,
                     limit: 10,
