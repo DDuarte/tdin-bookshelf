@@ -1,6 +1,6 @@
 'use strict';
 
-var books = require('google-books-search'),
+var books = require('google-books-search-2'),
     Joi = require('joi');
 
 module.exports = function (server) {
@@ -21,20 +21,24 @@ module.exports = function (server) {
             tags: ['api'],
             handler: function (request, reply) {
                 books.search(request.params.term, {
-                    field: 'title',
+                    key: "AIzaSyAHPVnstGWXlxNu3OLfeDa1Hhm8OxT0vRM",
+                    field: request.query.field,
                     offset: 0,
                     limit: 10,
                     type: 'books',
                     order: 'relevance',
-                    lang: 'en'
-                }, function(error, results) {
-                    if (error)
-                        return reply(error).code(500);
-
+                    lang: 'en',
+                    projection: 'full'
+                })
+                .then(function(results) {
                     return reply(results);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                    return reply(error);
                 });
             }
         }
-    })
+    });
 
 };
