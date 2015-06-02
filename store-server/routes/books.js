@@ -13,7 +13,7 @@ module.exports = function(server) {
             validate: {
                 payload: {
                     title: Joi.string().required(),
-                    description: Joi.string().required(),
+                    description: Joi.string().allow(null),
                     isbn: Joi.string().required(),
                     stock: Joi.number().required(),
                     price: Joi.number().required(),
@@ -66,4 +66,34 @@ module.exports = function(server) {
             }
         }
     });
+
+    server.route({
+        path: '/api/books/{id}',
+        method: 'GET',
+        config: {
+            tags: ['api'],
+            validate: {
+                params: {
+                    id: Joi.number().required()
+                }
+            },
+            handler: function(request, reply) {
+                Models.Book.findOne({
+                    where: {
+                        id: request.params.id
+                    }
+                })
+                .then(function(Book) {
+                    if (!Book)
+                        return reply(Boom.notFound("Book not found"));
+
+                    return reply(Book.dataValues);
+                })
+                .catch(function(error) {
+                    console.log("Error:", error);
+                });
+            }
+        }
+    });
+
 };
