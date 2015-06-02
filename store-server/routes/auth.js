@@ -96,8 +96,10 @@ module.exports = function (server) {
             },
             handler: function (request, reply) {
                 Models.Customer.findOne({
-                    email: request.payload.email,
-                    password: SHA256(request.payload.password).toString(CryptoJS.enc.Base64)
+                    where: {
+                        email: request.payload.email,
+                        password: SHA256(request.payload.password).toString(CryptoJS.enc.Base64)
+                    }
                 })
                 .then(function(Customer) {
                     if (!Customer)
