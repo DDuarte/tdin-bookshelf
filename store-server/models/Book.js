@@ -1,7 +1,9 @@
 module.exports = function(sequelize, DataTypes) {
     return sequelize.define('Book', {
         ISBN: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING,
+            unique: true,
+            required: true
         },
         year: {
             type: DataTypes.INTEGER
@@ -12,7 +14,15 @@ module.exports = function(sequelize, DataTypes) {
         },
         stock: {
             type: DataTypes.INTEGER,
-            unsigned: true
+            unsigned: true,
+            default: 0
+        },
+        price: {
+            type: DataTypes.DOUBLE,
+            required: true
+        },
+        description: {
+            type: DataTypes.TEXT
         }
     });
 };
