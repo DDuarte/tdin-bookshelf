@@ -1,0 +1,23 @@
+{
+  "name": "server-bookshelf-warehouse",
+  "description": "Bookshelf warehouse platform server",
+  "version": "0.0.1",
+  "homepage": "https://github.com/RubenCordeiro/tdin-bookshelf",
+  "authors": [
+    "Duarte Duarte <dnpd.dd@gmail.com> (https://github.com/DDuarte)",
+    "Ruben Cordeiro <ruben.cordeiro.eng@gmail.com> (https://github.com/RubenCordeiro)"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4",
+    "angular": "~1.4.0"
+  },
+  private: true
+}
