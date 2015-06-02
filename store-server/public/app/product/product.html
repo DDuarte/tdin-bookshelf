@@ -4,92 +4,27 @@
             <div class="col-md-6">
                 <div class="tab-content">
                     <div class="tab-pane active" id="product-page1">
-                        <img src="../assets/img/examples/product-page1.jpg"/>
-                    </div>
-                    <div class="tab-pane" id="product-page2">
-                        <img src="../assets/img/examples/product-page2.jpg"/>
-                    </div>
-                    <div class="tab-pane" id="product-page3">
-                        <img src="../assets/img/examples/product-page3.jpg"/>
-                    </div>
-                    <div class="tab-pane" id="product-page4">
-                        <img src="../assets/img/examples/product-page4.jpg"/>
-                    </div>
-                    <div class="tab-pane" id="product-page5">
-                        <img src="../assets/img/examples/product-page5.jpg"/>
-                    </div>
-                    <div class="tab-pane" id="product-page6">
-                        <img src="../assets/img/examples/product-page6.jpg"/>
+                        <img class="img-thumbnail" ng-src="{{book.thumbnail}}"/>
                     </div>
                 </div>
-                <ul class="nav nav-text" role="tablist" id="flexiselDemo1">
-                    <li class="active">
-                        <a href="#product-page1" role="tab" data-toggle="tab" aria-expanded="false">
-                            <img src="../assets/img/examples/product-page1-xs.jpg"/>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="#product-page2" role="tab" data-toggle="tab" aria-expanded="false">
-                            <img src="../assets/img/examples/product-page2-xs.jpg"/>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="#product-page3" role="tab" data-toggle="tab" aria-expanded="false">
-                            <img src="../assets/img/examples/product-page3-xs.jpg"/>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="#product-page4" role="tab" data-toggle="tab" aria-expanded="true">
-                            <img src="../assets/img/examples/product-page4-xs.jpg"/>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="#product-page5" role="tab" data-toggle="tab" aria-expanded="true">
-                            <img src="../assets/img/examples/product-page5-xs.jpg"/>
-                        </a>
-                    </li>
-                    <li class="">
-                        <a href="#product-page6" role="tab" data-toggle="tab" aria-expanded="true">
-                            <img src="../assets/img/examples/product-page6-xs.jpg"/>
-                        </a>
-                    </li>
-                </ul>
                 <div class="clearout"></div>
             </div>
             <div class="col-md-6">
                 <div class="product-details">
                     <a href="">
-                        <h3 class="title">The holy bible</h3>
+                        <h3 class="title">{{book.title}}</h3>
                     </a>
 
                     <p class="description">
-                       <strong>ISBN:</strong> Brown single-breasted brushed-wool checked blazer
+                       <strong>ISBN:</strong> {{book.ISBN}}
                     </p>
 
-                    <span class="price"><strong>Price:</strong> € 1,930</span>
+                    <span class="price"><strong>Price:</strong> € {{book.price}}</span>
                 </div>
                 <accordion class="panel-group" role="tablist" aria-multiselectable="true">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" role="tab" id="headingOne">
-                            <h4 class="panel-title">
-                                <a data-toggle="collapse"
-                                   aria-expanded="true" aria-controls="collapseOne">
-                                    Book Description
-                                </a>
-                            </h4>
-                        </div>
-                        <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel"
-                             aria-labelledby="headingOne">
-                            <div class="panel-body">
-                                Behold, the holy bible! I can feel the faith pouring in my veins.
-                            </div>
-                        </div>
-                    </div>
-                    <accordion-group heading="Delivery options" class="panel panel-default">
+                    <accordion-group heading="Description" class="panel panel-default">
                         <div class="panel-body">
-                            Find out more about our delivery options.
-                            Get this book on your shelf. If you don't like it, we'll happily collect it from your home
-                            or office for free.
+                            {{book.description}}
                         </div>
                     </accordion-group>
                 </accordion>

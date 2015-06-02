@@ -10,11 +10,20 @@ angular.module('BookshelfApp.product', ['ui.router', 'BookshelfApp.root', 'ui.bo
         });
     }])
 
-    .controller('ProductCtrl', ['$scope', '$modal', function ($scope, $modal) {
+    .controller('ProductCtrl', ['$scope', '$modal', '$stateParams', 'SweetAlert', 'BookModel',
+        function ($scope, $modal, $stateParams, SweetAlert, BookModel) {
         /* sidebar hurdles */
         transparent = false;
         $('nav[role="navigation"]').removeClass('navbar-transparent').addClass('navbar-default'); // oh, no... Jquery!
         $(window).off('scroll');
+
+        BookModel.getById($stateParams.id)
+        .then(function(Book) {
+            $scope.book = Book;
+        })
+        .catch(function(error) {
+            SweetAlert.swal("Error", error, "error");
+        });
 
         $scope.login = function() {
             var modalInstance = $modal.open({
