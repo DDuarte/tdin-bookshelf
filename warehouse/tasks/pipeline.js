@@ -15,6 +15,12 @@
 // (if you're using LESS with the built-in default config, you'll want
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
+  'bower_components/bootstrap/dist/css/bootstrap.css',
+  'gsdk/css/gsdk.css',
+  'gsdk/css/examples.css',
+  'bower_components/angular-toastr/dist/angular-toastr.css',
+  'bower_components/font-awesome/css/font-awesome.css',
+
   'styles/**/*.css'
 ];
 
@@ -22,12 +28,20 @@ var cssFilesToInject = [
 // Client-side javascript files to inject in order
 // (uses Grunt-style wildcard/glob/splat expressions)
 var jsFilesToInject = [
-  
+
   // Load sails.io before everything else
   'js/dependencies/sails.io.js',
 
+  'bower_components/jquery/dist/jquery.js',
+  'bower_components/angular/angular.js',
+  'bower_components/angular-toastr/dist/angular-toastr.tpls.js',
+  'bower_components/bootstrap/dist/js/bootstrap.js',
+  'gsdk/js/get-shit-done.js',
+
   // Dependencies like jQuery, or Angular are brought in here
   'js/dependencies/**/*.js',
+
+  'js/public/signup/SignupModule.js',
 
   // All of the rest of your client-side js files
   // will be injected here in no particular order.

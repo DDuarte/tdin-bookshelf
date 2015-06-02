@@ -33,8 +33,25 @@ module.exports.routes = {
   ***************************************************************************/
 
   '/': {
-    view: 'homepage'
-  }
+    view: 'homepage',
+    locals: {
+      controller: 'HomepageController',
+      module: 'HomepageModule',
+      title: 'Home'
+    }
+  },
+
+  'GET /signin': {
+    view: 'signup',
+    locals: {
+      controller: 'SignupController',
+      module: 'SignupModule',
+      title: 'Signup'
+    }
+  },
+
+  // API
+  'POST /signup': 'UserController.create'
 
   /***************************************************************************
   *                                                                          *

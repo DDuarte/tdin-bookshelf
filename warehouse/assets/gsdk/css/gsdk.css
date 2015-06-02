@@ -1992,7 +1992,7 @@ fieldset[disabled] .form-control {
   -webkit-box-shadow: none;
   box-shadow: none;
 }
-.navbar-form .form-control {
+/*.navbar-form .form-control {
   border-radius: 0;
   border: 0;
   padding: 0;
@@ -2001,7 +2001,7 @@ fieldset[disabled] .form-control {
   font-size: 16px;
   line-height: 1.5;
   color: #e3e3e3;
-}
+}*/
 .navbar-transparent .navbar-form .form-control,
 [class*="navbar-ct"] .navbar-form .form-control {
   color: #ffffff;
@@ -5124,11 +5124,11 @@ fieldset[disabled] .form-control {
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  */
-/*  
+/*
  *
  *   SCSS by Creative Tim
  *   http://www.creative-tim.com
- *   
+ *
  */
 .datepicker {
   top: 0;
