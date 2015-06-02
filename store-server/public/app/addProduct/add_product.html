@@ -12,11 +12,12 @@
                                ng-model="book.title"
                                typeahead="book.title for book in getBooksByTitle($viewValue)"
                                typeahead-on-select="selectBook($item)"
+                               typeahead-wait-ms="300"
                                placeholder="Book title" required>
                     </div>
                     <div class="form-group">
                         <label for="isbn">ISBN</label>
-                        <input name="isbn" class="form-control" id="isbn" ng-model="book.isbn.identifier"
+                        <input name="isbn" class="form-control" id="isbn" ng-model="book.isbn"
                                placeholder="ISBN" typeahead="book.isbn.identifier for book in getBooksByISBN($viewValue)" required>
                     </div>
                     <div class="form-group">
@@ -37,7 +38,7 @@
             <div class="col-md-4 col-md-offset-2">
                 <div class="contact-info">
                     <h5> Thumbnail </h5>
-                    <img ng-src="{{book.thumbnail}}">
+                    <img class="img-rounded" ng-src="{{book.thumbnail}}">
                 </div>
             </div>
         </div>
