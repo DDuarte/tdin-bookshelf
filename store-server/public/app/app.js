@@ -15,7 +15,9 @@ angular.module('BookshelfApp', [
     'BookshelfApp.login',
     'ui.bootstrap',
     'ui.router',
-    'autocomplete'
+    'autocomplete',
+    'oitozero.ngSweetAlert',
+    'ngLodash'
 ])
     .config(['$urlRouterProvider', '$httpProvider', function ($urlRouterProvider, $httpProvider) {
 
