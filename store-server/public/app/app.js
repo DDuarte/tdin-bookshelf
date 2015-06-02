@@ -7,13 +7,15 @@ angular.module('BookshelfApp', [
     'BookshelfApp.product',
     'BookshelfApp.checkout',
     'BookshelfApp.models',
+    'BookshelfApp.addProduct',
     'BookshelfApp.config.server',
     'BookshelfApp.authentication.session',
     'BookshelfApp.authentication.main',
     'BookshelfApp.authentication.interceptor',
     'BookshelfApp.login',
     'ui.bootstrap',
-    'ui.router'
+    'ui.router',
+    'autocomplete'
 ])
     .config(['$urlRouterProvider', '$httpProvider', function ($urlRouterProvider, $httpProvider) {
 
