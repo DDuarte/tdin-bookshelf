@@ -8,7 +8,7 @@
                 <span class="icon-bar bar2"></span>
                 <span class="icon-bar bar3"></span>
             </button>
-            <a class="navbar-brand" href="#"> Bookshelf</a>
+            <a class="navbar-brand" ui-sref="root.home"> Bookshelf</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -23,34 +23,16 @@
                     </a>
                     <ul class="dropdown-menu dropdown-with-icons">
                         <li>
-                            <a href="blog-page.html">
-                                <i class="pe-7s-settings"></i> Account details
-                            </a>
-                        </li>
-                        <li>
-                            <a href="blog-post.html">
-                                <i class="pe-7s-box2"></i> My orders
+                            <a ui-sref="root.myOrders">
+                                <i class="pe-7s-box2"></i> Orders
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li ng-if="user && user.token" class="dropdown" dropdown on-toggle="toggled(open)">
-                    <a href="#" class="dropdown-toggle" dropdown-toggle>
+                <li ng-if="user && user.token">
+                    <a ui-sref="root.checkout">
                         <i class="pe-7s-cart"></i><p>Basket</p>
                     </a>
-                    <ul class="dropdown-menu dropdown-with-icons">
-                        <li>
-                            <a>
-                                <img class="item-shopping-cart-thumbnail" src="http://ekit.co.uk/GalleryEntries/eCommerce_solutions_and_services/MedRes_Product-presentation-2.jpg?q=27012012153123"> Item 1
-                            </a>
-                        </li>
-                        <li>
-                            <a>
-                                <img class="item-shopping-cart-thumbnail" src="http://ekit.co.uk/GalleryEntries/eCommerce_solutions_and_services/MedRes_Product-presentation-2.jpg?q=27012012153123"> Item 2
-                            </a>
-                        </li>
-                        <button class="btn btn-primary">Checkout</button>
-                    </ul>
                 </li>
                 <li ng-if="!user || !user.token">
                     <button ng-click="signin()" class="btn btn-round btn-default">Hello, sign in</button>

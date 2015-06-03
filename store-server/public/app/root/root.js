@@ -15,7 +15,10 @@ angular.module('BookshelfApp.root', ['ui.router'])
             console.log('Dropdown is now: ', open);
         };
 
-        $scope.user = sessionService.user;
+        sessionService.loadSession()
+            .then(function() {
+                $scope.user = sessionService.user;
+            });
         $scope.$on(AUTH_EVENTS.loginSuccess, function() {
             console.log("Logged in:", sessionService.user);
             $scope.user = sessionService.user;
