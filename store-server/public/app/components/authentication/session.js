@@ -43,14 +43,7 @@ angular.module('BookshelfApp.authentication.session', ['LocalForageModule'])
 
                     try {
                         self.user = JSON.parse(data);
-                        $http.post(ServerConfig.baseUrl + '/validateToken', {})
-                            .then(function () {
-                                return deferred.resolve(self.data);
-                            },
-                            function (error) {
-                                self.user = null;
-                                return deferred.reject(error.data);
-                            });
+                        return deferred.resolve(self.data);
                     } catch (ex) {
                         return deferred.reject('User session was corrupted');
                     }
