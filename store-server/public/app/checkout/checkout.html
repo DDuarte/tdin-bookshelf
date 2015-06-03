@@ -13,15 +13,15 @@
 
                             <th class="text-center"></th>
 
-                            <th>Product</th>
+                            <th>Title</th>
 
-                            <th class="th-description">Description</th>
-
-                            <th class="text-right">Price</th>
+                            <th class="text-right">Unit price</th>
 
                             <th class="text-right">Qty</th>
 
                             <th class="text-right">Amount</th>
+
+                            <th></th>
 
                             <th></th>
 
@@ -31,13 +31,13 @@
 
                         <tbody>
 
-                        <tr>
+                        <tr ng-repeat="item in cartItems">
 
                             <td>
 
                                 <div class="img-container">
 
-                                    <img src="assets/img/shopping_1.jpg" alt="...">
+                                    <img ng-src="{{item.getData().thumbnail}}" alt="...">
 
                                 </div>
 
@@ -45,40 +45,33 @@
 
                             <td class="td-name">
 
-                                Moleskine Agenda
+                                {{item.getName()}}
 
                             </td>
-
-                            <td>
-
-                                <b>Meeting Notes</b>
-
-                                <p>
-
-                                    Most beautiful agenda for the office.</p>
-
-                            </td>
-
 
                             <td class="td-number">
 
                                 <small>&euro;</small>
-                                49
+                                {{item.getPrice()}}
 
                             </td>
 
                             <td class="td-number">
 
                                 <small>x</small>
-                                25
+                                {{item.getQuantity()}}
 
                             </td>
 
                             <td class="td-number">
 
                                 <small>&euro;</small>
-                                1,225
+                                {{item.getTotal()}}
 
+                            </td>
+
+                            <td>
+                                <button class="btn btn-danger" ng-click="removeCartItem($index)">Remove</button>
                             </td>
 
                         </tr>
@@ -96,11 +89,11 @@
                             </td>
 
                             <td class="td-price" style="font-size: 20px; width: 100px;">
-                                1,512 &euro;
+                                {{ngCart.getSubTotal()}} &euro;
                             </td>
 
                             <td>
-                                <button type="button" class="btn btn-info btn-fill btn-l">Complete Purchase <i
+                                <button type="button" class="btn btn-info btn-fill btn-l" ng-click="checkout()">Complete Purchase <i
                                         class="fa fa-chevron-right"></i></button>
                             </td>
 
