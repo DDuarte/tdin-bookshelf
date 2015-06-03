@@ -35,6 +35,8 @@ angular.module('BookshelfApp.checkout', ['ui.router', 'BookshelfApp.root', 'ui.b
 
             OrderModel.create(sessionService.user.id, {items: items})
             .then(function(Order) {
+                ngCart.empty(true);
+                $scope.cartItems = ngCart.getItems();
                 SweetAlert.swal("Order successfully created", "", "success");
             })
             .catch(function(error) {
