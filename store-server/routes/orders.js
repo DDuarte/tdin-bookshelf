@@ -4,7 +4,14 @@ var Joi = require('joi'),
     Boom = require('boom'),
     _ = require('lodash'),
     Models = require('../models'),
-    Promise = require('bluebird');
+    Promise = require('bluebird'),
+    Config = require('config'),
+    context = require('rabbit.js').createContext(Config.rabbit.host),
+    push = context.socket('PUSH');
+
+push.connect('orders', function() {
+    console.log("Connected to push socket orders");
+});
 
 module.exports = function(server) {
 
@@ -103,16 +110,52 @@ module.exports = function(server) {
                                 }
 
                                 NewOrder.setBooks(Books, {transaction: t})
-                                    .then(function() {
-                                        console.log("After set books");
+                                .then(function() {
+                                    console.log("After set books");
+
+                                    var unfulfilledItems = [];
+                                    Books.forEach(function(book) {
+                                        if (book.dataValues.stock < book.OrderBook.quantity)
+                                            unfulfilledItems.push(book);
+                                        else {
+                                            Models.Book.update({
+                                                where: {
+                                                    id: book.dataValues.id
+                                                }
+                                            }, {
+                                                stock: book.dataValues.stock - book.OrderBook.quantity
+                                            })
+                                            .catch(function(error) {
+                                                console.log("Error updating book:", error);
+                                                t.rollback();
+                                                return reply(Boom.badImplementation("Internal server error"));
+                                            });
+                                        }
+                                    });
+
+                                    if (unfulfilledItems.length == 0) {
                                         t.commit();
                                         return reply(NewOrder.dataValues);
-                                    })
-                                    .catch(function(error) {
-                                        console.log("Error:", error);
-                                        t.rollback();
-                                        return reply(Boom.badImplementation("Internal server error"));
-                                    });
+                                    } else {
+                                        push.write(JSON.stringify({
+                                            storeOrderId: NewOrder.dataValues.id,
+                                            books: _.map(unfulfilledItems, function(book) {
+                                                return {
+                                                    title: book.dataValues.title,
+                                                    ISBN: book.dataValues.ISBN,
+                                                    quantity: book.OrderBook.quantity * 10
+                                                }
+                                            })
+                                        }), 'utf8');
+                                        t.commit();
+                                        return reply(NewOrder.dataValues);
+                                    }
+                                })
+                                .catch(function(error) {
+                                    console.log("Error:", error);
+                                    t.rollback();
+                                    return reply(Boom.badImplementation("Internal server error"));
+                                });
                             }).catch(function(error) {
                                 console.log("Error:", error);
                                 t.rollback();

@@ -9,5 +9,8 @@
       "port": 5432
     }
   },
+  "rabbit": {
+    "host": "amqp://-UjhSQW2:I7wUztYvmR2CRNt8YYKDzvFs9QuwP_E5@furry-laburnum-34.bigwig.lshift.net:10596/ZDeYcPlGqzB3"
+  },
   "jwt": ":D'TH=;F g}zKuM]B.N[U5|Cf!]vuF"
 }
