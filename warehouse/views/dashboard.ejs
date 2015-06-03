@@ -1,0 +1,78 @@
+<!-- Static navbar -->
+<nav class="navbar navbar-default navbar-static-top">
+  <div class="container">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Warehouse | Bookshelf</a>
+    </div>
+    <div id="navbar" class="navbar-right">
+      <a class="btn btn-info btn-fill" ng-href="/logout">Logout</a>
+    </div>
+    <!--/.nav-collapse -->
+  </div>
+</nav>
+
+<div class="container">
+  <div class="section">
+    <h3 class="section-title">Pending Orders</h3>
+
+    <table class="table table-responsive">
+      <thead>
+      <tr>
+        <th class="text-center">#</th>
+        <th>Date</th>
+        <th>Quantity</th>
+        <th class="text-right">Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="order in orders">
+        <td class="text-center">{{ order.id }}</td>
+        <td>{{ order.date | date: 'medium' }}</td>
+        <td>{{ numberOfBooks(order.books) }}</td>
+        <td class="td-actions text-right">
+          <button ng-click="openOrderDetails(order)" type="button" rel="tooltip" title=""
+                  class="btn btn-info btn-simple btn-xs" data-original-title="View Details">
+            <i class="fa fa-info"></i>
+          </button>
+          <button type="button" rel="tooltip" title="" class="btn btn-success btn-simple btn-xs"
+                  data-original-title="Dispatch">
+            <i class="fa fa-check"></i>
+          </button>
+          <button type="button" rel="tooltip" title="" class="btn btn-danger btn-simple btn-xs"
+                  data-original-title="Remove">
+            <i class="fa fa-times"></i>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div> <!-- /container -->
+
+<script type="text/ng-template" id="orderDetailsModal.html">
+  <div class="modal-header">
+    <h3 class="modal-title">Order {{ order.id }} Details</h3>
+  </div>
+  <div class="modal-body">
+    <table class="table table-responsive">
+      <thead>
+      <tr>
+        <th class="text-center">ISBN</th>
+        <th>Title</th>
+        <th>Quantity</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr ng-repeat="book in order.books">
+        <td class="text-center">{{ book.isbn }}</td>
+        <td>{{ book.title }}</td>
+        <td>{{ book.quantity }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary btn-fill" ng-click="dispatch()">Dispatch</button>
+    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+  </div>
+</script>
