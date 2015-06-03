@@ -17,7 +17,8 @@ var sequelize = new Sequelize(
 var models = [
     'Order',
     'Customer',
-    'Book'
+    'Book',
+    'OrderBook'
 ];
 
 models.forEach(function(model) {
@@ -29,13 +30,11 @@ models.forEach(function(model) {
 (function(m) {
 
     m.Book.hasMany(m.Order, {
-        as: 'OrderBooks',
-        through: 'OrderBooks'
+        through: m.OrderBook
     });
 
     m.Order.hasMany(m.Book, {
-        as: 'OrderBooks',
-        through: 'OrderBooks'
+        through: m.OrderBook
     });
 
     m.Customer.hasMany(m.Order);

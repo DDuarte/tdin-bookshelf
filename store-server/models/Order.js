@@ -3,9 +3,6 @@ module.exports = function(sequelize, DataTypes) {
         state: {
             type: DataTypes.ENUM('waiting', 'dispatched', 'toDispatch'),
             required: true
-        },
-        date: {
-            type: DataTypes.DATE
         }
     });
 };
