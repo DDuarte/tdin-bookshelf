@@ -10,8 +10,8 @@ angular.module('BookshelfApp.product', ['ui.router', 'BookshelfApp.root', 'ui.bo
         });
     }])
 
-    .controller('ProductCtrl', ['$scope', '$modal', '$stateParams', 'SweetAlert', 'BookModel',
-        function ($scope, $modal, $stateParams, SweetAlert, BookModel) {
+    .controller('ProductCtrl', ['$scope', '$modal', '$stateParams', 'SweetAlert', 'BookModel', 'ngCart',
+        function ($scope, $modal, $stateParams, SweetAlert, BookModel, ngCart) {
         /* sidebar hurdles */
         transparent = false;
         $('nav[role="navigation"]').removeClass('navbar-transparent').addClass('navbar-default'); // oh, no... Jquery!
@@ -25,13 +25,23 @@ angular.module('BookshelfApp.product', ['ui.router', 'BookshelfApp.root', 'ui.bo
             SweetAlert.swal("Error", error, "error");
         });
 
-        $scope.login = function() {
-            var modalInstance = $modal.open({
-                templateUrl: 'login/loginDialog.html',
-                controller: 'LoginDialogCtrl',
-                resolve: {
+        $scope.addToCart = function() {
 
+            if (!$scope.quantity) {
+                SweetAlert.swal("Please, specify a purchase quantity", "", "error");
+                return;
+            }
+            ngCart.addItem(
+                $scope.book.id,
+                $scope.book.title,
+                $scope.book.price,
+                $scope.quantity,
+                {
+                    thumbnail: $scope.book.thumbnail,
+                    isbn: $scope.book.ISBN
                 }
-            });
-        }
+            );
+
+            SweetAlert.swal("Item added to cart", "", "success");
+        };
     }]);
