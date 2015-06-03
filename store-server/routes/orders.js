@@ -13,13 +13,42 @@ module.exports = function(server) {
         method: 'GET',
         config: {
             tags: ['api'],
+            auth: 'token',
             validate: {
                 params: {
-                    userId: Joi.number()
+                    userId: Joi.number().required()
                 }
             },
             handler: function(request, reply) {
-                reply(request.params.userId);
+
+                if (request.auth.credentials.id != request.params.userId)
+                    return reply(Boom.unauthorized("No permission"));
+
+                Models.Order.findAll({
+                    where: {
+                        CustomerId: request.params.userId
+                    }
+                })
+                .then(function(Orders) {
+
+                    Promise.map(Orders, function(Order) {
+                        return Order.getBooks()
+                        .then(function(Books) {
+                            return {
+                                order: Order.dataValues,
+                                items: _.map(Books, function(Book) {
+                                    return Book.dataValues;
+                                })
+                            }
+                        });
+                    }).then(function(ret) {
+                        return reply(ret);
+                    });
+                })
+                .catch(function(error) {
+                    console.log("Error:", error);
+                    return reply(Boom.badImplementation("Internal server error"));
+                });
             }
         }
     });
@@ -106,6 +135,7 @@ module.exports = function(server) {
         method: 'GET',
         config: {
             tags: ['api'],
+            auth: 'token',
             validate: {
                 params: {
                     userId: Joi.number(),
@@ -113,8 +143,39 @@ module.exports = function(server) {
                 }
             },
             handler: function(request, reply) {
-                reply("Not yet implemented");
+                if (request.auth.credentials.id != request.params.userId)
+                    return reply(Boom.unauthorized("No permission"));
+
+                Models.Order.findOne({
+                    where: {
+                        CustomerId: request.params.userId,
+                        id: request.params.orderId
+                    }
+                })
+                .then(function(Order) {
+
+                    if (!Order)
+                        return reply(Boom.notFound("No order found with the given id"));
+
+                    Order.getBooks()
+                    .then(function(Books) {
+                        return reply({
+                            orderData: Order.dataValues,
+                            items: _.map(Books, function(Book) {
+                                return Book.dataValues;
+                            })
+                        });
+                    })
+                    .catch(function(error) {
+                        console.log("Error:", error);
+                        return reply(Boom.badImplementation("Internal server error"));
+                    });
+                })
+                .catch(function(error) {
+                    console.log("Error:", error);
+                    return reply(Boom.badImplementation("Internal server error"));
+                });
             }
         }
-    })
+    });
 };
