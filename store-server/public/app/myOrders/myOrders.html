@@ -1,0 +1,27 @@
+<div class="section no-paralax">
+    <div class="container">
+        <h2 class="section-title">Your orders</h2>
+        <div class="row">
+            <table st-table="orders" class="table table-striped">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="order in orders">
+                    <td>{{order.id}}</td>
+                    <td>{{order.createdAt}}</td>
+                    <td>
+                        <button type="button" ng-click="seeDetails(order)" class="btn btn-sm btn-danger">
+                            See details
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

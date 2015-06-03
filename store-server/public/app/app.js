@@ -8,6 +8,7 @@ angular.module('BookshelfApp', [
     'BookshelfApp.checkout',
     'BookshelfApp.models',
     'BookshelfApp.addProduct',
+    'BookshelfApp.myOrders',
     'BookshelfApp.config.server',
     'BookshelfApp.authentication.session',
     'BookshelfApp.authentication.main',
