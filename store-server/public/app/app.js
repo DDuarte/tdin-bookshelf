@@ -18,7 +18,8 @@ angular.module('BookshelfApp', [
     'ui.router',
     'autocomplete',
     'oitozero.ngSweetAlert',
-    'ngLodash'
+    'ngLodash',
+    'ngCart'
 ])
     .config(['$urlRouterProvider', '$httpProvider', function ($urlRouterProvider, $httpProvider) {
 
