@@ -20,6 +20,7 @@ var cssFilesToInject = [
   'gsdk/css/examples.css',
   'bower_components/angular-toastr/dist/angular-toastr.css',
   'bower_components/font-awesome/css/font-awesome.css',
+  'bower_components/angular-bootstrap/ui-bootstrap-csp.css',
 
   'styles/**/*.css'
 ];
@@ -36,12 +37,14 @@ var jsFilesToInject = [
   'bower_components/angular/angular.js',
   'bower_components/angular-toastr/dist/angular-toastr.tpls.js',
   'bower_components/bootstrap/dist/js/bootstrap.js',
+  'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
   'gsdk/js/get-shit-done.js',
 
   // Dependencies like jQuery, or Angular are brought in here
   'js/dependencies/**/*.js',
 
-  'js/public/signup/SignupModule.js',
+  'js/public/homepage/HomepageModule.js',
+  'js/private/dashboard/DashboardModule.js',
 
   // All of the rest of your client-side js files
   // will be injected here in no particular order.

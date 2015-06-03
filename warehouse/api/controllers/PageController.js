@@ -10,8 +10,8 @@ module.exports = {
 	showHomePage: function (req, res) {
 
     // If not logged in, show the public view.
-    if (!req.session.me) {
-      return res.view('homepage');
+    if (!req.session || !req.session.me) {
+      return res.redirect('/home');
     }
 
     // Otherwise, look up the logged-in user and show the logged-in view,
@@ -23,10 +23,10 @@ module.exports = {
 
       if (!user) {
         sails.log.verbose('Session refers to a user who no longer exists- did you delete a user, then try to refresh the page with an open tab logged-in as that user?');
-        return res.view('homepage');
+        return res.redirect('/home');
       }
 
-      return res.view('dashboard', {
+      return res.redirect('/dashboard' /*,  {
         me: {
           id: user.id,
           name: user.name,
@@ -34,7 +34,7 @@ module.exports = {
           description: user.description,
           gravatarUrl: user.gravatarUrl
         }
-      });
+      } */);
 
     });
   }

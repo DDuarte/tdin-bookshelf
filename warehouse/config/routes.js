@@ -32,7 +32,8 @@ module.exports.routes = {
   *                                                                          *
   ***************************************************************************/
 
-  '/': {
+  'GET /': 'PageController.showHomePage',
+  'GET /home': {
     view: 'homepage',
     locals: {
       controller: 'HomepageController',
@@ -41,17 +42,19 @@ module.exports.routes = {
     }
   },
 
-  'GET /signin': {
-    view: 'signup',
+  'GET /dashboard': {
+    view: 'dashboard',
     locals: {
-      controller: 'SignupController',
-      module: 'SignupModule',
-      title: 'Signup'
+      controller: 'DashboardController',
+      module: 'DashboardModule',
+      title: 'Dashboard'
     }
   },
 
   // API
-  'POST /signup': 'UserController.create'
+  'POST /signup': 'UserController.signup',
+  'PUT /login': 'UserController.login',
+  'GET /logout': 'UserController.logout'
 
   /***************************************************************************
   *                                                                          *

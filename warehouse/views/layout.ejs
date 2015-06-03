@@ -34,20 +34,30 @@
     <link rel="stylesheet" href="/gsdk/css/examples.css">
     <link rel="stylesheet" href="/bower_components/angular-toastr/dist/angular-toastr.css">
     <link rel="stylesheet" href="/bower_components/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="/bower_components/angular-bootstrap/ui-bootstrap-csp.css">
     <link rel="stylesheet" href="/styles/importer.css">
     <!--STYLES END-->
   </head>
 
+  <% if (typeof module !== 'undefined') { %>
   <body ng-app="<%- module %>" ng-controller="<%- controller %>" ng-cloak>
+  <% } else { %>
+  <body>
+  <% } %>
     <%- body %>
-    <footer class="footer">
-      <div class="container text-right">
-        <br>
-        <p class="text-muted"><a href="#">Bookshelf.com</a></p>
-        <p class="text-muted">A modern Enterprise System by <a href="https://github.com/DDuarte">Duarte Duarte</a> and <a
-            href="https://github.com/RubenCordeiro">Ruben Cordeiro</a></p>
+
+  <footer class="footer footer-transparent" style="background-image: url('http://37.media.tumblr.com/d77e21ed167c2125627b210b48e23f81/tumblr_na0kw25OtD1st5lhmo1_1280.jpg');">
+    <div class="container">
+      <div class="social-area pull-right">
+        <a href="#">
+          <i class="fa fa-book"></i> Bookshelf.com
+        </a>
       </div>
-    </footer>
+      <div class="copyright">
+        © 2015 A modern Enterprise System by <a href="https://github.com/DDuarte">Duarte Duarte</a> and <a href="https://github.com/RubenCordeiro">Ruben Cordeiro</a>
+      </div>
+    </div>
+  </footer>
 
 
     <!--
@@ -105,10 +115,13 @@
     <script src="/bower_components/angular/angular.js"></script>
     <script src="/bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
     <script src="/bower_components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="/gsdk/js/get-shit-done.js"></script>
     <script src="/js/dependencies/compareTo.module.js"></script>
-    <script src="/js/public/signup/SignupModule.js"></script>
-    <script src="/js/public/signup/SignupController.js"></script>
+    <script src="/js/public/homepage/HomepageModule.js"></script>
+    <script src="/js/private/dashboard/DashboardModule.js"></script>
+    <script src="/js/private/dashboard/DashboardController.js"></script>
+    <script src="/js/public/homepage/HomepageController.js"></script>
     <!--SCRIPTS END-->
   </body>
 </html>
