@@ -114,5 +114,5 @@ module.exports = function (server) {
                 });
             }
         }
-    })
+    });
 };
