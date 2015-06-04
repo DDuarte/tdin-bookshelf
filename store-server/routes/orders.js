@@ -6,6 +6,7 @@ var Joi = require('joi'),
     Models = require('../models'),
     Promise = require('bluebird'),
     Config = require('config'),
+    moment = require('moment'),
     context = require('rabbit.js').createContext(Config.rabbit.host),
     push = context.socket('PUSH');
 
@@ -111,19 +112,17 @@ module.exports = function(server) {
 
                                 NewOrder.setBooks(Books, {transaction: t})
                                 .then(function() {
-                                    console.log("After set books");
-
                                     var unfulfilledItems = [];
                                     Books.forEach(function(book) {
                                         if (book.dataValues.stock < book.OrderBook.quantity)
                                             unfulfilledItems.push(book);
                                         else {
                                             Models.Book.update({
+                                                stock: book.dataValues.stock - book.OrderBook.quantity
+                                            }, {
                                                 where: {
                                                     id: book.dataValues.id
                                                 }
-                                            }, {
-                                                stock: book.dataValues.stock - book.OrderBook.quantity
                                             })
                                             .catch(function(error) {
                                                 console.log("Error updating book:", error);
@@ -133,9 +132,24 @@ module.exports = function(server) {
                                         }
                                     });
 
+                                    console.log("Books updated successfully");
+
                                     if (unfulfilledItems.length == 0) {
                                         t.commit();
-                                        return reply(NewOrder.dataValues);
+                                        Models.Order.update({
+                                            state: 'toDispatch',
+                                            dispatchDate: moment().add('days', 1)
+                                        },{
+                                            where: {
+                                                id: NewOrder.dataValues.id
+                                            }
+                                        }).then(function() {
+                                            return reply(NewOrder.dataValues);
+                                        }).catch(function(error) {
+                                            console.log("Error marking order as dispatched:", error);
+                                            t.rollback();
+                                            return reply(Boom.badImplementation("Internal server error"));
+                                        });
                                     } else {
                                         push.write(JSON.stringify({
                                             storeOrderId: NewOrder.dataValues.id,
@@ -217,6 +231,105 @@ module.exports = function(server) {
                 .catch(function(error) {
                     console.log("Error:", error);
                     return reply(Boom.badImplementation("Internal server error"));
+                });
+            }
+        }
+    });
+
+    server.route({
+        path: '/api/orders/{orderId}',
+        method: 'PATCH',
+        config: {
+            tags: ['api'],
+            validate: {
+                params: {
+                    orderId: Joi.number().integer().required()
+                },
+                payload: {
+                    books: Joi.array().items(Joi.object().keys({
+                        ISBN: Joi.string(),
+                        quantity: Joi.number().integer()
+                    })).required()
+                }
+            },
+            handler: function(request, reply) {
+
+                Models.sequelize.transaction().then(function (t) {
+                    Models.Order.findOne({
+                        where: {
+                            id: request.params.orderId
+                        }
+                    })
+                    .then(function(Order) {
+                        if (!Order)
+                            return reply(Boom.notFound("No order with the supplied id was found"));
+
+                        Models.Order.update({
+                            state: 'toDispatch',
+                            dispatchDate: moment().add('days', 2)
+                        }, {
+                            where: {
+                                id: request.params.orderId
+                            }
+                        },{ transaction: t })
+                        .then(function() {
+                            Promise.map(request.payload.books, function(book) {
+                                return new Promise(function(resolve, reject) {
+                                    Models.findOne({
+                                        where: {
+                                            ISBN: book.ISBN
+                                        }
+                                    }).then(function(BookModel) {
+                                        if (!BookModel)
+                                            return reject("Book not found with ISBN: " + book.ISBN);
+
+                                        Order.getBooks({
+                                            where: {
+                                                ISBN: book.ISBN
+                                            }
+                                        }).then(function(OrderBook) {
+
+                                            if (!OrderBook)
+                                                return reject("No order book found for ISBN:" + book.ISBN);
+
+                                            console.log("Order book quantity:", OrderBook.dataValues.quantity);
+                                            Models.Book.update({
+                                                stock: BookModel.dataValues.stock + (book.quantity - OrderBook.dataValues.quantity)
+                                            }, {
+                                                where: {
+                                                    ISBN: book.ISBN
+                                                }
+                                            }, {transaction: t}).then(function(NewBookModel) {
+                                                return resolve(NewBookModel.dataValues);
+                                            }).catch(function(error) {
+                                                return reject(error);
+                                            });
+                                        });
+
+                                    }).catch(function(error) {
+                                        return reject(error);
+                                    });
+                                });
+                            }).then(function() {
+                                t.commit();
+                                return reply(Order.dataValues);
+                            }).catch(function(error) {
+                                console.log("Error:", error);
+                                t.rollback();
+                                return reply(Boom.badImplementation("Internal server error"));
+                            });
+                        })
+                        .catch(function(error) {
+                            console.log("Error updating order:", error);
+                            t.rollback();
+                            return reply(Boom.badImplementation("Internal server error"));
+                        });
+                    })
+                    .catch(function(error) {
+                        console.log("Error:", error);
+                        t.rollback();
+                        return reply(Boom.badImplementation("Internal server error"));
+                    });
                 });
             }
         }
