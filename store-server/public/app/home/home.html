@@ -14,86 +14,26 @@
         <h2 class="section-title">Latest Offers</h2>
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-md-4" ng-repeat="book in latestBooks">
                 <div class="card card-product card-plain">
                     <div class="image">
                         <a href="#">
-                            <img src="../assets/img/examples/ecommerce5.jpg" alt="..."/>
+                            <img class="img-thumbnail" ng-src="{{ book.thumbnail }}" alt="..."/>
                         </a>
                     </div>
                     <div class="content">
                         <a href="#">
-                            <h4 class="title">Gucci</h4>
+                            <h4 class="title" ng-bind="book.title"></h4>
                         </a>
 
-                        <p class="description">
-                            Beautifully tailored from rich burgundy velvet, this impeccable piece has lustrous black
-                            satin lining and smart satin-covered buttons.
-                        </p>
+                        <p class="description" ng-bind="book.description"></p>
 
                         <div class="footer">
-                            <span class="price price-old"> &euro;1,930</span>
-                            <span class="price price-new">&euro;1,330</span>
+                            <span class="price price-old"> &euro;{{ book.price + 1 }}</span>
+                            <span class="price price-new">&euro;{{ book.price }}</span>
                             <button class="btn btn-danger btn-simple pull-right" rel="tooltip"
-                                    title="Remove from wishlist" data-placement="left">
-                                <i class="fa fa-heart"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- end card -->
-            </div>
-            <div class="col-md-4">
-                <div class="card card-product card-plain">
-                    <div class="image">
-                        <a href="#">
-                            <img src="../assets/img/examples/ecommerce6.jpg" alt="..."/>
-                        </a>
-                    </div>
-                    <div class="content">
-                        <a href="#">
-                            <h4 class="title">Canali</h4>
-                        </a>
-
-                        <p class="description">
-                            The structured shoulders and sleek detailing ensure a sharp silhouette. Team it with a
-                            silk pocket square and leather loafers.
-                        </p>
-
-                        <div class="footer">
-                            <span class="price price-old"> &euro;1,430</span>
-                            <span class="price price-new">&euro;1,030</span>
-
-                            <button class="btn btn-danger btn-simple btn-hover pull-right">
-                                <i class="fa fa-heart-o"></i> Wishlist
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <!-- end card -->
-            </div>
-            <div class="col-md-4">
-                <div class="card card-product card-plain">
-                    <div class="image">
-                        <a href="#">
-                            <img src="../assets/img/examples/ecommerce7.jpg" alt="..."/>
-                        </a>
-                    </div>
-                    <div class="content">
-                        <a href="#">
-                            <h4 class="title">Canali</h4>
-                        </a>
-
-                        <p class="description">
-                            The smooth woven-wool is water resistant to ensure you stay pristine after a long-haul
-                            flight. Cut in a trim yet comfortable regular fit.
-                        </p>
-
-                        <div class="footer">
-                            <span class="price price-old"> &euro;1,299</span>
-                            <span class="price price-new"> &euro;760</span>
-                            <button class="btn btn-danger btn-simple btn-hover pull-right">
-                                <i class="fa fa-heart-o"></i> Wishlist
+                                    title="Buy" data-placement="left">
+                                <i class="fa fa-shopping-cart"></i>
                             </button>
                         </div>
                     </div>
@@ -105,474 +45,6 @@
 </div>
 <!-- section -->
 
-<div class="section">
-    <div class="container">
-        <h2 class="section-title">Find what you need</h2>
-
-        <div class="row">
-
-
-            <div class="col-md-3">
-                <div class="card card-refine card-plain">
-                    <div class="header">
-                        <h4 class="title">Refine
-                            <button class="btn btn-default btn-xs btn pull-right btn-simple" rel="tooltip"
-                                    title="Reset Filter">
-                                <i class="fa fa-refresh"></i>
-                            </button>
-                        </h4>
-                    </div>
-                    <div class="content">
-                        <div class="panel-group" id="accordion">
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h6 class="panel-title">
-                                        <a data-toggle="collapse" href="#refinePrice">
-                                            Price Range
-                                            <i class="fa fa-caret-up pull-right"></i>
-                                        </a>
-                                    </h6>
-                                </div>
-                                <div id="refinePrice" class="panel-collapse collapse in">
-                                    <div class="panel-body">
-                                        <span class="price price-left">&euro; 100</span>
-                                        <span class="price price-right">&euro; 850</span>
-
-                                        <div class="clearfix"></div>
-                                        <div id="refine-price-range" class="slider slider-info"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h6 class="panel-title">
-                                        <a data-toggle="collapse" href="#refineClothing" class="collapsed">
-                                            Clothing
-                                            <i class="fa fa-caret-up pull-right"></i>
-                                        </a>
-                                    </h6>
-                                </div>
-                                <div id="refineClothing" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox" checked="">
-                                            Blazers
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Casual Shirts
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Formal Shirts
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Jeans
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Polos
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Pyjamas
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Shorts
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Trousers
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h6 class="panel-title">
-                                        <a data-toggle="collapse" href="#refineDesigner">
-                                            Designer
-                                            <i class="fa fa-caret-up pull-right"></i>
-                                        </a>
-                                    </h6>
-                                </div>
-                                <div id="refineDesigner" class="panel-collapse collapse in">
-                                    <div class="panel-body panel-scroll">
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox" checked="">
-                                            All
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Acne Studio
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Alex Mill
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Alexander McQueen
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Alfred Dunhill
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            AMI
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Berena
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Berluti
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Burberry Prorsum
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Calvin Klein
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Canali
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Club Monaco
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Dolce & Gabbana
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Gucci
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Kolor
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Lanvin
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Loro Piana
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Massimo Alba
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h6 class="panel-title">
-                                        <a data-toggle="collapse" href="#refineColour" class="collapsed">
-                                            Colour
-                                            <i class="fa fa-caret-up pull-right"></i>
-                                        </a>
-                                    </h6>
-                                </div>
-                                <div id="refineColour" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox" checked="">
-                                            All
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Black
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Blue
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Brown
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Gray
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Green
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Neutrals
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" value="" data-toggle="checkbox">
-                                            Purple
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end panel -->
-
-                        </div>
-                    </div>
-                </div>
-                <!-- end card -->
-            </div>
-
-            <div class="col-md-9">
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="card card-product card-plain">
-                            <div class="image">
-                                <a href="#">
-                                    <img src="../assets/img/examples/ecommerce9.jpg" alt="..."/>
-                                </a>
-                            </div>
-                            <div class="content">
-                                <a href="#">
-                                    <h4 class="title">Lutwyche</h4>
-                                </a>
-
-                                <p class="description">
-                                    Blue check wool and cashmere-blend blazer
-                                </p>
-
-                                <div class="footer">
-                                    <span class="price"> &euro; 3,330</span>
-                                    <button class="btn btn-danger btn-simple pull-right" rel="tooltip"
-                                            title="Remove from wishlist" data-placement="left">
-                                        <i class="fa fa-heart"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end card -->
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card card-product card-plain">
-                            <div class="image">
-                                <a href="#">
-                                    <img src="../assets/img/examples/ecommerce8.jpg" alt="..."/>
-                                </a>
-                            </div>
-                            <div class="content">
-                                <a href="#">
-                                    <h4 class="title">Canali</h4>
-                                </a>
-
-                                <p class="description">
-                                    Blue water-resistant wool travel blazer
-
-                                </p>
-
-                                <div class="footer">
-                                    <span class="price">&euro; 1,930</span>
-                                    <button class="btn btn-danger btn-simple btn-hover pull-right" rel="tooltip"
-                                            title="Add to wishlist" data-placement="left">
-                                        <i class="fa fa-heart-o"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end card -->
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card card-product card-plain">
-                            <div class="image">
-                                <a href="#">
-                                    <img src="../assets/img/examples/ecommerce10.jpg" alt="..."/>
-                                </a>
-                            </div>
-                            <div class="content">
-                                <a href="#">
-                                    <h4 class="title">Lutwyche</h4>
-                                </a>
-
-                                <p class="description">
-                                    Brown check wool and cashmere-blend blazer
-                                </p>
-
-                                <div class="footer">
-                                    <span class="price"> &euro; 3,330</span>
-                                    <button class="btn btn-danger btn-simple btn-hover pull-right" rel="tooltip"
-                                            title="Add to wishlist" data-placement="left">
-                                        <i class="fa fa-heart-o"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end card -->
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card card-product card-plain">
-                            <div class="image">
-                                <a href="#">
-                                    <img src="../assets/img/examples/ecommerce10.jpg" alt="..."/>
-                                </a>
-                            </div>
-                            <div class="content">
-                                <a href="#">
-                                    <h4 class="title">Lutwyche</h4>
-                                </a>
-
-                                <p class="description">
-                                    Brown check wool and cashmere-blend blazer
-                                </p>
-
-                                <div class="footer">
-                                    <span class="price"> &euro; 3,330</span>
-                                    <button class="btn btn-danger btn-simple btn-hover pull-right" rel="tooltip"
-                                            title="Add to wishlist" data-placement="left">
-                                        <i class="fa fa-heart-o"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end card -->
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card card-product card-plain">
-                            <div class="image">
-                                <a href="#">
-                                    <img src="../assets/img/examples/ecommerce9.jpg" alt="..."/>
-                                </a>
-                            </div>
-                            <div class="content">
-                                <a href="#">
-                                    <h4 class="title">Lutwyche</h4>
-                                </a>
-
-                                <p class="description">
-                                    Blue check wool and cashmere-blend blazer
-                                </p>
-
-                                <div class="footer">
-                                    <span class="price"> &euro; 3,330</span>
-                                    <button class="btn btn-danger btn-simple pull-right" rel="tooltip"
-                                            title="Remove from wishlist" data-placement="left">
-                                        <i class="fa fa-heart"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end card -->
-                    </div>
-                    <div class="col-md-4">
-                        <div class="card card-product card-plain">
-                            <div class="image">
-                                <a href="#">
-                                    <img src="../assets/img/examples/ecommerce8.jpg" alt="..."/>
-                                </a>
-                            </div>
-                            <div class="content">
-                                <a href="#">
-                                    <h4 class="title">Canali</h4>
-                                </a>
-
-                                <p class="description">
-                                    Blue water-resistant wool travel blazer
-
-                                </p>
-
-                                <div class="footer">
-                                    <span class="price">&euro; 1,930</span>
-                                    <button class="btn btn-danger btn-simple btn-hover pull-right" rel="tooltip"
-                                            title="Add to wishlist" data-placement="left">
-                                        <i class="fa fa-heart-o"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- end card -->
-                    </div>
-                    <div class="col-md-3 col-md-offset-4">
-                        <button rel="tooltip" title="This is a morphing button" class="btn btn-default btn-round"
-                                id="successBtn" data-toggle="morphing" data-rotation-color="gray">Load more...
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- section -->
-
-
-<div class="section section-blog">
-    <div class="container">
-        <h2 class="section-title">Latest Tips</h2>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card card-background">
-                    <a href="#">
-                        <div class="image">
-                            <img src="../assets/img/examples/ecommerce2.jpg" alt="..."/>
-
-                            <div class="filter"></div>
-                        </div>
-                        <div class="footer">
-                            <h4 class="title">2015 Guidelines for choosing suits </h4>
-                        </div>
-                    </a>
-                </div>
-                <!-- end card -->
-            </div>
-
-            <div class="col-md-4">
-                <div class="card card-background">
-                    <a href="#">
-                        <div class="image">
-                            <img src="../assets/img/examples/ecommerce3.jpg" alt="..."/>
-
-                            <div class="filter filter-azure"></div>
-                        </div>
-                        <div class="footer">
-                            <h4 class="title">How to choose the best gift for him </h4>
-                        </div>
-                    </a>
-                </div>
-                <!-- end card -->
-            </div>
-
-            <div class="col-md-4">
-                <div class="card card-background">
-                    <a href="#">
-                        <div class="image">
-                            <img src="../assets/img/examples/ecommerce4.jpg" alt="..."/>
-
-                            <div class="filter filter-orange"></div>
-                        </div>
-                        <div class="footer">
-                            <h4 class="title">Nice title can be here too </h4>
-                        </div>
-                    </a>
-                </div>
-                <!-- end card -->
-            </div>
-
-        </div>
-    </div>
-</div>
-<!-- section -->
 <div class="space-50"></div>
 <div class="subscribe-line subscribe-line-transparent"
      style="background-image: url('../assets/img/examples/ecommerce_blur.png')">
@@ -586,7 +58,7 @@
                 </form>
             </div>
             <div class="col-md-3">
-                <button type="button" class="btn btn-warning btn-fill btn-block">Subscribe Now!</button>
+                <button type="button" class="btn btn-warning btn-fill btn-block">Subscribe to our newsletter</button>
             </div>
         </div>
     </div>
@@ -666,15 +138,15 @@
                     <ul>
                         <li>
                             <a href="#">
-                                <i class="fa fa-twitter"></i> <b>Get Shit Done</b>
-                                The best kit in the market is here, just give it a try and let us...
+                                <i class="fa fa-twitter"></i> <b>Bookshelf</b>
+                                The best book seller in the market is here, just give it a try and let us...
                                 <hr class="hr-small">
                             </a>
                         </li>
                         <li>
                             <a href="#">
                                 <i class="fa fa-twitter"></i>
-                                We've just been featured on <b> Awwwards Website</b>! Thank you everybody for...
+                                We've just been featured on <b> Best Bookshops</b>! Thank you everybody for...
                             </a>
                         </li>
 
@@ -703,7 +175,7 @@
             </a>
         </div>
         <div class="copyright">
-            &copy; 2015 Creative Tim, made with love
+            &copy; 2015 A modern Enterprise System by <a href="https://github.com/DDuarte">Duarte Duarte</a> and <a href="https://github.com/RubenCordeiro">Ruben Cordeiro</a>
         </div>
     </div>
 </footer>

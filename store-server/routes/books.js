@@ -61,8 +61,12 @@ module.exports = function(server) {
             tags: ['api'],
             handler: function(request, reply) {
                 Models.Book.findAll({
-
-                })
+                    limit: 3
+                }).then(function (books) {
+                    return reply(books);
+                }).catch(function (error) {
+                    return Boom.badImplementation(error);
+                });
             }
         }
     });
@@ -91,9 +95,9 @@ module.exports = function(server) {
                 })
                 .catch(function(error) {
                     console.log("Error:", error);
+                    return reply(Boom.badImplementation(error));
                 });
             }
         }
     });
-
 };
