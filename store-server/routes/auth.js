@@ -110,6 +110,7 @@ module.exports = function (server) {
                         return reply(Boom.badRequest("Invalid email and/or password"));
 
                     var ret = _.omit(Customer.dataValues, 'password');
+                    ret.scope = 'customer';
                     ret = _.set(ret, 'token', Jwt.sign(ret, privateKey));
                     return reply(ret);
                 })
