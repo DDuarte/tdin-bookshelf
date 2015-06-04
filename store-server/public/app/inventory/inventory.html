@@ -1,0 +1,59 @@
+<div class="section no-paralax">
+    <div class="container">
+        <h2 class="section-title">Inventory</h2>
+
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-shopping">
+                    <thead>
+                    <tr>
+                        <th class="text-center"></th>
+                        <th class="th-description">Book</th>
+                        <th>ISBN</th>
+                        <th class="text-right">Price</th>
+                        <th class="text-right">Stock</th>
+                        <th class="text-right">Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="book in books">
+                        <td>
+                            <div class="img-container">
+                                <img ng-src="{{ book.thumbnail }}" alt="...">
+                            </div>
+                        </td>
+                        <td class="td-name">
+                            {{ book.title }}
+                            <p>
+                                {{ book.description | limitTo: 30 }}{{book.description.length > 30 ? '...' : ''}}
+                            </p>
+                        </td>
+                        <td>
+                            {{ book.ISBN }}
+                        </td>
+                        <td class="td-number">
+                            <small>&euro;</small>{{ book.price }}
+                        </td>
+                        <td class="td-number">
+                            <small>x</small>{{ book.stock }}
+                        </td>
+                        <td class="td-number">
+                            <small>&euro;</small>{{ book.price * book.stock }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"></td>
+                        <td></td>
+                        <td class="td-total">
+                            Total
+                        </td>
+                        <td colspan="2" class="td-price">
+                            <small>&euro;</small>{{ total }}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

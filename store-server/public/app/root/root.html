@@ -14,15 +14,12 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
-                <!-- Both -->
-                <li ng-if="user && user.token">
+                <!-- Customer -->
+                <li ng-if="user && user.token && isCustomer">
                     <a ui-sref="root.products">
                         <i class="pe-7s-albums"></i><p>Books</p>
                     </a>
                 </li>
-                <!-- /Both -->
-
-                <!-- Customer -->
                 <li ng-if="user && user.token && isCustomer" class="dropdown" dropdown on-toggle="toggled(open)">
                     <a href="#" class="dropdown-toggle" dropdown-toggle>
 
@@ -51,6 +48,11 @@
                 <!-- /Customer -->
 
                 <!-- Clerk -->
+                <li ng-if="user && user.token && isClerk">
+                    <a ui-sref="root.inventory">
+                        <i class="pe-7s-albums"></i> <p>Inventory</p>
+                    </a>
+                </li>
                 <li ng-if="user && user.token && isClerk">
                     <a ui-sref="root.addProduct">
                         <i class="pe-7s-plus"></i> <p>Add book</p>

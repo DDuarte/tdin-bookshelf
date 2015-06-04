@@ -9,6 +9,7 @@ angular.module('BookshelfApp', [
     'BookshelfApp.checkout',
     'BookshelfApp.models',
     'BookshelfApp.addProduct',
+    'BookshelfApp.inventory',
     'BookshelfApp.myOrders',
     'BookshelfApp.orders',
     'BookshelfApp.config.server',
