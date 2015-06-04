@@ -17,6 +17,40 @@ push.connect('orders', function() {
 module.exports = function(server) {
 
     server.route({
+        path: '/api/orders',
+        method: 'GET',
+        config: {
+            tags: ['api'],
+            auth: 'token',
+            handler: function(request, reply) {
+
+                Models.Order.findAll({
+                })
+                .then(function(Orders) {
+
+                    Promise.map(Orders, function(Order) {
+                        return Order.getBooks()
+                            .then(function(Books) {
+                                return {
+                                    order: Order.dataValues,
+                                    items: _.map(Books, function(Book) {
+                                        return Book.dataValues;
+                                    })
+                                }
+                            });
+                    }).then(function(ret) {
+                        return reply(ret);
+                    });
+                })
+                .catch(function(error) {
+                    console.log("Error:", error);
+                    return reply(Boom.badImplementation("Internal server error"));
+                });
+            }
+        }
+    });
+
+    server.route({
         path: '/api/users/{userId}/orders',
         method: 'GET',
         config: {
