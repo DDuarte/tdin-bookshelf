@@ -31,14 +31,20 @@
         <div class="modal-body">
             <form name="registerForm">
                 <div class="form-group">
-                    <input type="text" ng-model="register.email" placeholder="Email" class="form-control">
+                    <input type="text" ng-model="register.username" placeholder="Your name" class="form-control" required>
                 </div>
                 <div class="form-group">
-                    <input type="password" ng-model="register.password" placeholder="Password" class="form-control">
+                    <input type="text" ng-model="register.email" placeholder="Email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <textarea ng-model="register.address" placeholder="Street address" class="form-control" required></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="password" ng-model="register.password" placeholder="Password" class="form-control" required>
                 </div>
                 <div class="form-group">
                     <input type="password" ng-model="register.password2" placeholder="Password Confirmation"
-                           class="form-control">
+                           class="form-control" required>
                 </div>
                 <button type="button" ng-disabled="registerForm.$invalid || register.password != register.password2" ng-click="register()"
                         class="btn btn-info btn-fill btn-block"> Register

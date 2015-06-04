@@ -21,7 +21,7 @@ angular.module('BookshelfApp.login', [])
         };
 
         $scope.register = function() {
-            authService.register($scope.register.email, $scope.register.password)
+            authService.register($scope.register.username, $scope.register.email, $scope.register.address, $scope.register.password)
                 .then(function() {
                     $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
                     $modalInstance.close();

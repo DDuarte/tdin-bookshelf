@@ -44,16 +44,20 @@ angular.module('BookshelfApp.authentication.main', ['BookshelfApp.authentication
             /**
              * Registers a user in the system
              *
+             * @param {String} name
              * @param {String} email
-             * @param {String} scope
+             * @param {String} address
              * @param {String} password
              * @returns {Promise} Resolves to the registered user data if successful, rejects with an error otherwise
+             * $scope.register.name, $scope.register.email, $scope.register.address, $scope.register.password
              */
-            this.register = function (email, password) {
+            this.register = function (name, email, address, password) {
                 var deferred = $q.defer();
 
                 $http.post(ServerConfig.baseUrl + '/register', {
+                    name: name,
                     email: email,
+                    address: address,
                     password: password
                 }).then(function (result) {
                     sessionService.createSession(result.data)
