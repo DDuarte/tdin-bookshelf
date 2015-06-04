@@ -92,7 +92,7 @@ module.exports = function(server) {
                     }, {transaction: t})
                     .then(function(Customer) {
                         Models.Order.create({
-                            state: 'waiting',
+                            state: 'waiting expedition',
                             CustomerId: request.auth.credentials.id
                         }, {transaction: t})
                         .then(function(NewOrder) {
@@ -116,23 +116,7 @@ module.exports = function(server) {
                                     Books.forEach(function(book) {
                                         if (book.dataValues.stock < book.OrderBook.quantity)
                                             unfulfilledItems.push(book);
-                                        else {
-                                            Models.Book.update({
-                                                stock: book.dataValues.stock - book.OrderBook.quantity
-                                            }, {
-                                                where: {
-                                                    id: book.dataValues.id
-                                                }
-                                            })
-                                            .catch(function(error) {
-                                                console.log("Error updating book:", error);
-                                                t.rollback();
-                                                return reply(Boom.badImplementation("Internal server error"));
-                                            });
-                                        }
                                     });
-
-                                    console.log("Books updated successfully");
 
                                     if (unfulfilledItems.length == 0) {
                                         t.commit();
@@ -246,14 +230,13 @@ module.exports = function(server) {
                     orderId: Joi.number().integer().required()
                 },
                 payload: {
-                    books: Joi.array().items(Joi.object().keys({
-                        ISBN: Joi.string(),
-                        quantity: Joi.number().integer()
-                    })).required()
+                    books: Joi.array().required().items(Joi.object().keys({
+                        ISBN: Joi.string().required(),
+                        quantity: Joi.number().integer().required()
+                    }))
                 }
             },
             handler: function(request, reply) {
-
                 Models.sequelize.transaction().then(function (t) {
                     Models.Order.findOne({
                         where: {
@@ -275,7 +258,7 @@ module.exports = function(server) {
                         .then(function() {
                             Promise.map(request.payload.books, function(book) {
                                 return new Promise(function(resolve, reject) {
-                                    Models.findOne({
+                                    Models.Book.findOne({
                                         where: {
                                             ISBN: book.ISBN
                                         }
@@ -288,13 +271,11 @@ module.exports = function(server) {
                                                 ISBN: book.ISBN
                                             }
                                         }).then(function(OrderBook) {
-
-                                            if (!OrderBook)
+                                            if (!OrderBook || OrderBook.length == 0)
                                                 return reject("No order book found for ISBN:" + book.ISBN);
 
-                                            console.log("Order book quantity:", OrderBook.dataValues.quantity);
                                             Models.Book.update({
-                                                stock: BookModel.dataValues.stock + (book.quantity - OrderBook.dataValues.quantity)
+                                                stock: BookModel.dataValues.stock + book.quantity //OrderBook[0].dataValues.OrderBook.dataValues.quantity)
                                             }, {
                                                 where: {
                                                     ISBN: book.ISBN
@@ -304,6 +285,8 @@ module.exports = function(server) {
                                             }).catch(function(error) {
                                                 return reject(error);
                                             });
+                                        }).catch(function(error) {
+                                            return reject(error);
                                         });
 
                                     }).catch(function(error) {
