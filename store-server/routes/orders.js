@@ -206,6 +206,51 @@ module.exports = function(server) {
     });
 
     server.route({
+        path: '/api/orders/{orderId}',
+        method: 'GET',
+        config: {
+            tags: ['api'],
+            auth: 'token',
+            validate: {
+                params: {
+                    orderId: Joi.number().required()
+                }
+            },
+            handler: function(request, reply) {
+
+                Models.Order.findOne({
+                    where: {
+                        id: request.params.orderId
+                    }
+                })
+                .then(function(Order) {
+
+                    if (!Order)
+                        return reply(Boom.notFound("No order found with the given id"));
+
+                    Order.getBooks()
+                    .then(function(Books) {
+                        return reply({
+                            orderData: Order.dataValues,
+                            items: _.map(Books, function(Book) {
+                                return Book.dataValues;
+                            })
+                        });
+                    })
+                    .catch(function(error) {
+                        console.log("Error:", error);
+                        return reply(Boom.badImplementation("Internal server error"));
+                    });
+                })
+                .catch(function(error) {
+                    console.log("Error:", error);
+                    return reply(Boom.badImplementation("Internal server error"));
+                });
+            }
+        }
+    });
+
+    server.route({
         path: '/api/users/{userId}/orders/{orderId}',
         method: 'GET',
         config: {
