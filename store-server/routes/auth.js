@@ -106,15 +106,35 @@ module.exports = function (server) {
                     }
                 })
                 .then(function(Customer) {
-                    if (!Customer)
-                        return reply(Boom.badRequest("Invalid email and/or password"));
+                    if (Customer) {
+                        console.log("Customer:", Customer);
+                        var ret = _.omit(Customer.dataValues, 'password');
+                        ret.scope = 'customer';
+                        ret = _.set(ret, 'token', Jwt.sign(ret, privateKey));
+                        return reply(ret);
+                    }
 
-                    var ret = _.omit(Customer.dataValues, 'password');
-                    ret.scope = 'customer';
-                    ret = _.set(ret, 'token', Jwt.sign(ret, privateKey));
-                    return reply(ret);
+                    Models.Clerk.findOne({
+                        where: {
+                            email: request.payload.email,
+                            password: SHA256(request.payload.password).toString(CryptoJS.enc.Base64)
+                        }
+                    }).then(function(Clerk) {
+                        if (!Clerk)
+                            return reply(Boom.badRequest("Invalid email and/or password"));
+
+                        var ret = _.omit(Clerk.dataValues, 'password');
+                        ret.scope = 'clerk';
+                        ret = _.set(ret, 'token', Jwt.sign(ret, privateKey));
+                        return reply(ret);
+                    }).catch(function(error) {
+                        console.log("Error:", error);
+                        return reply(Boom.badImplementation("Internal server error"));
+                    });
+
                 })
                 .catch(function(error) {
+                    console.log("Error:", error);
                     return reply(Boom.badImplementation('Internal server error'));
                 });
             }
