@@ -8,6 +8,7 @@
                     <th>ID</th>
                     <th>Date</th>
                     <th>State</th>
+                    <th>Dispatch date</th>
                     <th></th>
                 </tr>
                 </thead>
@@ -16,6 +17,8 @@
                     <td>{{orderItem.order.id}}</td>
                     <td>{{orderItem.order.createdAt | date:'medium'}}</td>
                     <td>{{orderItem.order.state}}</td>
+                    <td ng-if="orderItem.order.state == 'waiting'">N/A</td>
+                    <td ng-if="orderItem.order.state != 'waiting'"> {{orderItem.order.dispatchDate | date:'medium'}} </td>
                     <td>
                         <button type="button" ng-click="seeDetails(orderItem)" class="btn btn-sm btn-danger">
                             See details

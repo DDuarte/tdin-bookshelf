@@ -57,6 +57,6 @@ angular.module('BookshelfApp.models.book', [])
             });
 
             return deferred.promise;
-        }
+        };
 
     }]);
