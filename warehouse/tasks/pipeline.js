@@ -21,6 +21,7 @@ var cssFilesToInject = [
   'bower_components/angular-toastr/dist/angular-toastr.css',
   'bower_components/font-awesome/css/font-awesome.css',
   'bower_components/angular-bootstrap/ui-bootstrap-csp.css',
+  'bower_components/sweetalert/dist/sweetalert.css',
 
   'styles/**/*.css'
 ];
@@ -38,6 +39,9 @@ var jsFilesToInject = [
   'bower_components/angular-toastr/dist/angular-toastr.tpls.js',
   'bower_components/bootstrap/dist/js/bootstrap.js',
   'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
+  'bower_components/sweetalert/dist/sweetalert-dev.js',
+  'bower_components/angular-sweetalert/SweetAlert.js',
+  'bower_components/ng-lodash/build/ng-lodash.js',
   'gsdk/js/get-shit-done.js',
 
   // Dependencies like jQuery, or Angular are brought in here

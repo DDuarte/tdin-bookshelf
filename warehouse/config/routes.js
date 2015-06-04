@@ -52,9 +52,20 @@ module.exports.routes = {
   },
 
   // API
+
+  // User management
   'POST /signup': 'UserController.signup',
   'PUT /login': 'UserController.login',
-  'GET /logout': 'UserController.logout'
+  'GET /logout': 'UserController.logout',
+
+  // Order management
+  'GET /orders': 'OrderController.find',
+  'GET /orders/:id': 'OrderController.findOne',
+  'PATCH /orders/:id': 'OrderController.dispatch',
+
+  // Book management
+  'GET /books': 'BookController.find',
+  'GET /books/:id': 'BookController.findOne'
 
   /***************************************************************************
   *                                                                          *

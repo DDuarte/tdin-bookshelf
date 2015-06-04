@@ -20,7 +20,13 @@
     "angular": "~1.4.0",
     "angular-toastr": "~1.4.1",
     "font-awesome": "~4.3.0",
-    "angular-bootstrap": "~0.13.0"
+    "angular-bootstrap": "~0.13.0",
+    "angular-sweetalert": "~1.1.0",
+    "sweetalert": "~1.0.1",
+    "ng-lodash": "~0.2.3"
   },
-  "private": true
+  "private": true,
+  "resolutions": {
+    "angular": "~1.4.0"
+  }
 }

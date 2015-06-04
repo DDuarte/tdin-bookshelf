@@ -1,1 +1,1 @@
-angular.module('DashboardModule', ['toastr', 'ui.bootstrap']);
+angular.module('DashboardModule', ['toastr', 'ui.bootstrap', 'oitozero.ngSweetAlert', 'ngLodash']);
