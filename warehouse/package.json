@@ -23,6 +23,7 @@
     "machinepack-passwords": "^2.2.1",
     "rabbit.js": "^0.4.2",
     "rc": "~0.5.0",
+    "request": "^2.57.0",
     "sails": "~0.11.0",
     "sails-disk": "~0.10.0"
   },

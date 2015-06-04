@@ -7,7 +7,6 @@ angular.module('DashboardModule').controller('DashboardController', ['$scope', '
     (function tick() {
       $http.get('/orders').
         success(function (data, status, headers, config) {
-          console.log($scope.displayDispatched);
           if ($scope.displayDispatched) {
             $scope.orders = data;
           } else {
@@ -60,6 +59,7 @@ angular.module('DashboardModule').controller('DashboardController', ['$scope', '
         }).
         error(function (data, status, headers, config) {
           console.log("Error in PATCH /orders/" + order.id, data, status, headers);
+          SweetAlert.swal("Oops...", "Something went wrong! Server returned " + status, "error");
         });
     };
   }]);
