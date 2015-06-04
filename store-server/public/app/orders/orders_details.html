@@ -22,6 +22,10 @@
 
                             <th class="text-right">Amount</th>
 
+                            <th></th>
+
+                            <th></th>
+
                         </tr>
 
                         </thead>
@@ -84,6 +88,12 @@
                             <td class="td-price" style="font-size: 20px; width: 100px;">
                                 {{order.total}} &euro;
                             </td>
+
+                            <td>
+                                <button type="button" class="btn btn-info btn-fill btn-l" ng-if="order.orderData.state == 'toDispatch'" ng-click="dispatch()"> Dispatch </button>
+                            </td>
+
+                            <td></td>
 
                         </tr>
 

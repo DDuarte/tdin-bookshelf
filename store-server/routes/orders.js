@@ -265,35 +265,125 @@ module.exports = function(server) {
             handler: function(request, reply) {
                 if (request.auth.credentials.id != request.params.userId)
                     return reply(Boom.unauthorized("No permission"));
-
-                Models.Order.findOne({
+                Models.Customer.findOne({
                     where: {
-                        CustomerId: request.params.userId,
-                        id: request.params.orderId
+                        id: request.params.userId
                     }
-                })
-                .then(function(Order) {
+                }).then(function(Customer) {
 
-                    if (!Order)
-                        return reply(Boom.notFound("No order found with the given id"));
+                    if (!Customer)
+                        return reply(Boom.notFound("User with the supplied id does not exist"));
 
-                    Order.getBooks()
-                    .then(function(Books) {
-                        return reply({
-                            orderData: Order.dataValues,
-                            items: _.map(Books, function(Book) {
-                                return Book.dataValues;
+                    Models.Order.findOne({
+                        where: {
+                            CustomerId: request.params.userId,
+                            id: request.params.orderId
+                        }
+                    })
+                    .then(function(Order) {
+
+                        if (!Order)
+                            return reply(Boom.notFound("No order found with the given id"));
+
+                        Order.getBooks()
+                            .then(function(Books) {
+                                return reply({
+                                    orderData: Order.dataValues,
+                                    items: _.map(Books, function(Book) {
+                                        return Book.dataValues;
+                                    }),
+                                    customerData: Customer.dataValues
+                                });
                             })
-                        });
+                            .catch(function(error) {
+                                console.log("Error:", error);
+                                return reply(Boom.badImplementation("Internal server error"));
+                            });
                     })
                     .catch(function(error) {
                         console.log("Error:", error);
                         return reply(Boom.badImplementation("Internal server error"));
                     });
-                })
-                .catch(function(error) {
+                }).catch(function(error) {
                     console.log("Error:", error);
                     return reply(Boom.badImplementation("Internal server error"));
+                });
+            }
+        }
+    });
+
+    server.route({
+        path: '/api/orders/{orderId}/dispatch',
+        method: 'POST',
+        config: {
+            tags: ['api'],
+            validate: {
+                params: {
+                    orderId: Joi.number().integer().required()
+                }
+            },
+            handler: function(request, reply) {
+                Models.sequelize.transaction().then(function (t) {
+                    Models.Order.findOne({
+                        where: {
+                            id: request.params.orderId
+                        }
+                    })
+                    .then(function(Order) {
+                        if (!Order)
+                            return reply(Boom.notFound("No order with the supplied id was found"));
+
+                        if (Order.dataValues.state == 'waiting expedition')
+                            return reply(Boom.badRequest("The order with the supplied id is not ready for dispatch"));
+
+                        if (Order.dataValues.state == 'dispatched')
+                            return reply(Boom.badRequest("The order with the supplied id is already dispatched"));
+
+                            Models.Order.update({
+                                state: 'dispatched',
+                                dispatchDate: moment()
+                            }, {
+                                where: {
+                                    id: request.params.orderId
+                                }
+                            },{ transaction: t })
+                            .then(function(NewOrder) {
+                                Order.getBooks()
+                                .then(function(Books) {
+                                    Promise.map(Books, function(Book) {
+                                        return Models.Book.update({
+                                            stock: Book.dataValues.stock - Book.dataValues.OrderBook.dataValues.quantity
+                                        }, {
+                                            where: {
+                                                id: Book.dataValues.id
+                                            }
+                                        }, {transaction: t});
+                                    }).then(function() {
+                                        t.commit();
+                                        return reply(NewOrder.dataValues);
+                                    }).catch(function(error) {
+                                        console.log("Error:", error);
+                                        t.rollback();
+                                        return reply(Boom.badImplementation("Internal server error"));
+                                    });
+                                })
+                                .catch(function(error) {
+                                    console.log("Error:", error);
+                                    t.rollback();
+                                    return reply(Boom.badImplementation("Internal server error"));
+                                })
+                            })
+                            .catch(function(error) {
+                                console.log("Error:", error);
+                                t.rollback();
+                                return reply(Boom.badImplementation("Internal server error"));
+                            })
+                    })
+                    .catch(function(error) {
+                        console.log("Error:", error);
+                        t.rollback();
+                        return reply(Boom.badImplementation("Internal server error"));
+                    });
                 });
             }
         }

@@ -74,4 +74,18 @@ angular.module('BookshelfApp.models.order', [])
             return deferred.promise;
         };
 
+        this.dispatch = function(orderId) {
+            var deferred = $q.defer();
+
+            $http.post(ServerConfig.baseUrl + '/orders/' + orderId + '/dispatch', {})
+            .then(function(result) {
+                return deferred.resolve(result.data);
+            })
+            .catch(function(error) {
+                return deferred.reject(error.data.message);
+            });
+
+            return deferred.promise;
+        };
+
     }]);

@@ -34,6 +34,22 @@ angular.module('BookshelfApp.orders', ['ui.router', 'BookshelfApp.root', 'ui.boo
                 SweetAlert.swal("Error", error, "error");
             });
 
+        $scope.dispatchOrder = function(orderItem) {
+            OrderModel.dispatch(orderItem.order.id)
+            .then(function() {
+                OrderModel.getAll()
+                .then(function(Orders) {
+                    $scope.orderItems = Orders;
+                })
+                .catch(function(error) {
+                    SweetAlert.swal("Error", error, "error");
+                });
+                SweetAlert.swal("Order was successfully dispatched", "", "success");
+            })
+            .catch(function(error) {
+                SweetAlert.swal("Error", error, "error");
+            });
+        };
         $scope.seeDetails = function(orderItem) {
             $state.go('root.ordersDetails', {id: orderItem.order.id});
         };
@@ -51,4 +67,15 @@ angular.module('BookshelfApp.orders', ['ui.router', 'BookshelfApp.root', 'ui.boo
                 .catch(function(error) {
                     SweetAlert.swal("Error", error, "error");
                 });
+
+            $scope.dispatch = function() {
+                OrderModel.dispatch($stateParams.id)
+                .then(function() {
+                    SweetAlert.swal("Order was successfully dispatched", "", "success");
+                    $state.go('root.orders');
+                })
+                .catch(function(error) {
+                    SweetAlert.swal("Error", error, "error");
+                });
+            };
         }]);

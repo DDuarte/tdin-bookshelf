@@ -1,6 +1,16 @@
 <div class="section no-paralax">
     <div class="container">
         <h2 class="section-title">Order #{{order.orderData.id}}</h2>
+
+        <span class="pull-right">
+            <p><strong>Recipient:</strong></p>
+            <p>Email: {{order.customerData.email}}</p>
+            <p>Name: {{order.customerData.name}}</p>
+            <p>Status: {{order.orderData.state}}</p>
+            <p ng-if="order.orderData.state == 'dispatched'">Dispatch date: {{order.orderData.dispatchDate}}</p>
+            <p>Address:</p>
+            <span>{{order.customerData.address}}</span>
+        </span>
         <div class="row">
             <div class="col-md-12">
 
@@ -21,6 +31,10 @@
                             <th class="text-right">Qty</th>
 
                             <th class="text-right">Amount</th>
+
+                            <th></th>
+
+                            <th></th>
 
                         </tr>
 
@@ -85,6 +99,11 @@
                                 {{order.total}} &euro;
                             </td>
 
+                            <td>
+                                <button type="button" id="printBtn" class="btn btn-info btn-fill btn-l" onclick="window.print()"> Print </button>
+                            </td>
+
+                            <td></td>
                         </tr>
 
                         </tbody>

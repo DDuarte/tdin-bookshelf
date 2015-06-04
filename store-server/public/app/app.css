@@ -17,3 +17,10 @@
 .slider.slider-horizontal {
     width: 100% !important;
 }
+
+/* receipt print markup */
+@media print {
+    #printBtn {
+        display: none;
+    }
+}
