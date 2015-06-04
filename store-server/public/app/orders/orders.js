@@ -9,11 +9,11 @@ angular.module('BookshelfApp.orders', ['ui.router', 'BookshelfApp.root', 'ui.boo
             controller: 'OrdersCtrl'
         });
 
-        /*$stateProvider.state('root.myOrdersDetails', {
-            url: 'myOrders/:id',
-            templateUrl: 'myOrders/myOrders_details.html',
-            controller: 'MyOrdersDetailsCtrl'
-        });*/
+        $stateProvider.state('root.ordersDetails', {
+            url: 'orders/:id',
+            templateUrl: 'orders/orders_details.html',
+            controller: 'OrdersDetailsCtrl'
+        });
     }])
 
     .controller('OrdersCtrl', ['$scope', '$state', 'SweetAlert', 'sessionService', 'OrderModel', function ($scope, $state, SweetAlert, sessionService, OrderModel) {
@@ -35,12 +35,12 @@ angular.module('BookshelfApp.orders', ['ui.router', 'BookshelfApp.root', 'ui.boo
             });
 
         $scope.seeDetails = function(orderItem) {
-            $state.go('root.myOrdersDetails', {id: orderItem.order.id});
+            $state.go('root.ordersDetails', {id: orderItem.order.id});
         };
-    }]);
-    /*.controller('MyOrdersDetailsCtrl', ['$scope', '$state', '$stateParams', 'sessionService', 'SweetAlert', 'OrderModel', 'lodash',
+    }])
+    .controller('OrdersDetailsCtrl', ['$scope', '$state', '$stateParams', 'sessionService', 'SweetAlert', 'OrderModel', 'lodash',
         function($scope, $state, $stateParams, sessionService, SweetAlert, OrderModel, lodash) {
-            OrderModel.getFromUser(sessionService.user.id, $stateParams.id)
+            OrderModel.getById($stateParams.id)
                 .then(function(Order) {
                     $scope.order = Order;
                     $scope.order.total = lodash.reduce($scope.order.items, function(total, item) {
@@ -51,4 +51,4 @@ angular.module('BookshelfApp.orders', ['ui.router', 'BookshelfApp.root', 'ui.boo
                 .catch(function(error) {
                     SweetAlert.swal("Error", error, "error");
                 });
-        }]);*/
+        }]);

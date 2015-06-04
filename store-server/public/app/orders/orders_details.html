@@ -1,0 +1,99 @@
+<div class="section no-paralax">
+    <div class="container">
+        <h2 class="section-title">Order #{{order.orderData.id}}</h2>
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="table-responsive">
+
+                    <table class="table table-shopping">
+
+                        <thead>
+
+                        <tr>
+
+                            <th class="text-center"></th>
+
+                            <th>Title</th>
+
+                            <th class="text-right">Unit price</th>
+
+                            <th class="text-right">Qty</th>
+
+                            <th class="text-right">Amount</th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        <tr ng-repeat="item in order.items">
+
+                            <td>
+
+                                <div class="img-container">
+
+                                    <img ng-src="{{item.thumbnail}}" alt="...">
+
+                                </div>
+
+                            </td>
+
+                            <td class="td-name">
+
+                                {{item.title}}
+
+                            </td>
+
+                            <td class="td-number">
+
+                                <small>&euro;</small>
+                                {{item.price}}
+
+                            </td>
+
+                            <td class="td-number">
+
+                                <small>x</small>
+                                {{item.OrderBook.quantity}}
+
+                            </td>
+
+                            <td class="td-number">
+
+                                <small>&euro;</small>
+                                {{item.price * item.OrderBook.quantity}}
+
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <td colspan="2"></td>
+
+                            <td></td>
+
+                            <td class="td-total">
+
+                                Total
+
+                            </td>
+
+                            <td class="td-price" style="font-size: 20px; width: 100px;">
+                                {{order.total}} &euro;
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
