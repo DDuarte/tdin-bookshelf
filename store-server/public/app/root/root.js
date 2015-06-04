@@ -6,7 +6,13 @@ angular.module('BookshelfApp.root', ['ui.router'])
         $stateProvider.state('root', {
             url: '/',
             templateUrl: 'root/root.html',
-            controller: 'RootCtrl'
+            controller: 'RootCtrl',
+            resolve: {
+                dataResource: 'sessionService',
+                data: function(sessionService) {
+                    return sessionService.loadSession()
+                }
+            }
         });
     }])
 
@@ -16,10 +22,7 @@ angular.module('BookshelfApp.root', ['ui.router'])
             console.log('Dropdown is now: ', open);
         };
 
-        sessionService.loadSession()
-            .then(function() {
-                $scope.user = sessionService.user;
-            });
+        $scope.user = sessionService.user;
 
         $scope.$on(AUTH_EVENTS.loginSuccess, function() {
             console.log("Logged in:", sessionService.user);
