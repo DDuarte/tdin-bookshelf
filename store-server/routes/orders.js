@@ -122,17 +122,16 @@ module.exports = function(server) {
                 if (request.auth.credentials.id != request.params.userId)
                     return reply(Boom.unauthorized("No permission"));
 
-                Models.sequelize.transaction().then(function (t) {
                     Models.Customer.findOne({
                         where: {
                             id: request.auth.credentials.id
                         }
-                    }, {transaction: t})
+                    })
                     .then(function(Customer) {
                         Models.Order.create({
                             state: 'waiting expedition',
                             CustomerId: request.auth.credentials.id
-                        }, {transaction: t})
+                        })
                         .then(function(NewOrder) {
                             Promise.map(request.payload.items, function(item) {
                                 console.log("Mapping items");
@@ -148,12 +147,14 @@ module.exports = function(server) {
                                     }
                                 }
 
-                                NewOrder.setBooks(Books, {transaction: t})
+                                NewOrder.setBooks(Books)
                                 .then(function() {
                                     var unfulfilledItems = [];
                                     Books.forEach(function(book) {
-                                        if (book.dataValues.stock < book.OrderBook.quantity)
+                                        if (book.dataValues.stock < book.OrderBook.quantity) {
+                                            console.log("Unfulfilled:", book.dataValues.stock, book.OrderBook.quantity);
                                             unfulfilledItems.push(book);
+                                        }
                                     });
 
                                     // setup e-mail data with unicode symbols
@@ -165,27 +166,57 @@ module.exports = function(server) {
                                     };
 
                                     if (unfulfilledItems.length == 0) {
-                                        t.commit();
                                         Models.Order.update({
-                                            state: 'toDispatch',
+                                            state: 'dispatched',
                                             dispatchDate: moment().add('days', 1)
                                         },{
                                             where: {
                                                 id: NewOrder.dataValues.id
                                             }
-                                        }).then(function() {
+                                        }).then(function(FinalOrder) {
+                                            console.log("FinalOrder:", FinalOrder.dataValues);
+                                            console.log("Update stocks");
+                                            NewOrder.getBooks()
+                                                .then(function(Books) {
+                                                    console.log("Go books");
+                                                    Promise.map(Books, function(Book) {
+                                                        console.log("Book:", Book.dataValues);
+                                                        return Models.Book.update({
+                                                            stock: Book.dataValues.stock - Book.dataValues.OrderBook.dataValues.quantity
+                                                        }, {
+                                                            where: {
+                                                                id: Book.dataValues.id
+                                                            }
+                                                        });
+                                                    }).then(function() {
+                                                        console.log("Sending email");
+                                                        mailOptions = {
+                                                            from: 'Bookshelf <no-reply@bookshelf.com>', // sender address
+                                                            to: Customer.dataValues.email, // list of receivers
+                                                            subject: format(Config.templates.orderDispatch.title, {orderId: NewOrder.dataValues.id}),
+                                                            text: format(Config.templates.orderDispatch.body, {orderId: NewOrder.dataValues.id, orderDate: moment().add('days', 1)})
+                                                        };
 
-                                            transporter.sendMail(mailOptions, function(error, info){
-                                                if(error){
-                                                    console.log("Error sending mail:", error);
-                                                }
-                                                console.log('Message sent: ' + info.response);
-                                            });
+                                                        transporter.sendMail(mailOptions, function(error, info){
+                                                            if(error){
+                                                                console.log("Error sending mail:", error);
+                                                            }
+                                                            console.log('Message sent: ' + info.response);
+                                                        });
 
-                                            return reply(NewOrder.dataValues);
+                                                        return reply(NewOrder.dataValues);
+
+                                                    }).catch(function(error) {
+                                                        console.log("Error:", error);
+                                                        return reply(Boom.badImplementation("Internal server error"));
+                                                    });
+                                                })
+                                                .catch(function(error) {
+                                                    console.log("Error:", error);
+                                                    return reply(Boom.badImplementation("Internal server error"));
+                                                });
                                         }).catch(function(error) {
                                             console.log("Error marking order as dispatched:", error);
-                                            t.rollback();
                                             return reply(Boom.badImplementation("Internal server error"));
                                         });
                                     } else {
@@ -199,7 +230,6 @@ module.exports = function(server) {
                                                 }
                                             })
                                         }), 'utf8');
-                                        t.commit();
 
                                         transporter.sendMail(mailOptions, function(error, info){
                                             if(error){
@@ -213,22 +243,18 @@ module.exports = function(server) {
                                 })
                                 .catch(function(error) {
                                     console.log("Error:", error);
-                                    t.rollback();
                                     return reply(Boom.badImplementation("Internal server error"));
                                 });
                             }).catch(function(error) {
                                 console.log("Error:", error);
-                                t.rollback();
                                 return reply(Boom.badImplementation("Internal server error"));
                             });
                         })
                     })
                     .catch(function(error) {
                         console.log("Error:", error);
-                        t.rollback();
                         return reply(Boom.badImplementation("Internal server error"));
                     });
-                });
             }
         }
     });
@@ -403,7 +429,7 @@ module.exports = function(server) {
                                                         from: 'Bookshelf <no-reply@bookshelf.com>', // sender address
                                                         to: Customer.dataValues.email, // list of receivers
                                                         subject: format(Config.templates.orderDispatch.title, {orderId: Order.dataValues.id}),
-                                                        text: format(Config.templates.orderDispatch.body, {orderId: Order.dataValues.id, orderDate: NewOrder.dataValues.dispatchDate})
+                                                        text: format(Config.templates.orderDispatch.body, {orderId: Order.dataValues.id, orderDate: moment()})
                                                     };
 
                                                     transporter.sendMail(mailOptions, function(error, info){
