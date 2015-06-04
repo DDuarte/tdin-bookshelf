@@ -23,10 +23,14 @@ angular.module('BookshelfApp.root', ['ui.router'])
         };
 
         $scope.user = sessionService.user;
+        $scope.isClerk = sessionService.isClerk();
+        $scope.isCustomer = sessionService.isCustomer();
 
         $scope.$on(AUTH_EVENTS.loginSuccess, function() {
             console.log("Logged in:", sessionService.user);
             $scope.user = sessionService.user;
+            $scope.isClerk = sessionService.isClerk();
+            $scope.isCustomer = sessionService.isCustomer();
         });
 
         $scope.signin = function() {

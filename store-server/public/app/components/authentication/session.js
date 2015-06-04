@@ -38,14 +38,14 @@ angular.module('BookshelfApp.authentication.session', ['LocalForageModule'])
                 .then(function (data) {
                     if (!data) {
                         console.log("No user session was found");
-                        return deferred.reject('No user session was found');
+                        return deferred.resolve('No user session was found');
                     }
 
                     try {
                         self.user = JSON.parse(data);
                         return deferred.resolve(self.data);
                     } catch (ex) {
-                        return deferred.reject('User session was corrupted');
+                        return deferred.resolve('User session was corrupted');
                     }
                 });
 
@@ -59,6 +59,14 @@ angular.module('BookshelfApp.authentication.session', ['LocalForageModule'])
         this.deleteSession = function () {
             this.user = null;
             $localForage.removeItem('user');
+        };
+
+        this.isCustomer = function() {
+            return this.user && this.user.scope == 'customer';
+        };
+
+        this.isClerk = function() {
+            return this.user && this.user.scope == 'clerk';
         };
 
     }]);
