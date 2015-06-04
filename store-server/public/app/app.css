@@ -13,3 +13,7 @@
     opacity: 1 !important;
     visibility: visible !important;
 }
+
+.slider.slider-horizontal {
+    width: 100% !important;
+}

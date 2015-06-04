@@ -45,6 +45,20 @@ angular.module('BookshelfApp.models.book', [])
             return deferred.promise;
         };
 
+        this.getAll = function() {
+            var deferred = $q.defer();
+
+            $http.get(ServerConfig.baseUrl + '/books')
+                .then(function (result) {
+                    return deferred.resolve(result.data);
+                })
+                .catch(function(error) {
+                    return deferred.reject(error.data.message);
+                });
+
+            return deferred.promise;
+        };
+
         this.create = function(book) {
             var deferred = $q.defer();
 

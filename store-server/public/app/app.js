@@ -4,6 +4,7 @@
 angular.module('BookshelfApp', [
     'BookshelfApp.root',
     'BookshelfApp.home',
+    'BookshelfApp.products',
     'BookshelfApp.product',
     'BookshelfApp.checkout',
     'BookshelfApp.models',

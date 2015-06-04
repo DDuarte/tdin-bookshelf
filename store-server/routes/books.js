@@ -72,6 +72,21 @@ module.exports = function(server) {
     });
 
     server.route({
+        path: '/api/books',
+        method: 'GET',
+        config: {
+            tags: ['api'],
+            handler: function(request, reply) {
+                Models.Book.findAll().then(function (books) {
+                    return reply(books);
+                }).catch(function (error) {
+                    return Boom.badImplementation(error);
+                });
+            }
+        }
+    });
+
+    server.route({
         path: '/api/books/{id}',
         method: 'GET',
         config: {
