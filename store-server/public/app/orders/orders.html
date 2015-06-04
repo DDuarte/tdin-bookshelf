@@ -17,10 +17,10 @@
                     <td>{{orderItem.order.id}}</td>
                     <td>{{orderItem.order.createdAt | date:'medium'}}</td>
                     <td>{{orderItem.order.state}}</td>
-                    <td ng-if="orderItem.order.state == 'waiting'">N/A</td>
-                    <td ng-if="orderItem.order.state != 'waiting'"> {{orderItem.order.dispatchDate | date:'medium'}} </td>
+                    <td ng-if="orderItem.order.state == 'waiting expedition'">N/A</td>
+                    <td ng-if="orderItem.order.state != 'waiting expedition'"> {{orderItem.order.dispatchDate | date:'medium'}} </td>
                     <td class="td-actions text-right">
-                        <button ng-click="dispatchOrder(orderItem)" ng-show="orderItem.order.dispatchDate" type="button" rel="tooltip" title=""
+                        <button ng-click="dispatchOrder(orderItem)" ng-show="orderItem.order.state == 'toDispatch'" type="button" rel="tooltip" title=""
                                 class="btn btn-success btn-simple"
                                 data-original-title="Dispatch">
                             <i class="fa fa-check"></i>
