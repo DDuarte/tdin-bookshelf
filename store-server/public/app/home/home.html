@@ -26,7 +26,7 @@
                             <h4 class="title" ng-bind="book.title"></h4>
                         </a>
 
-                        <p class="description" ng-bind="book.description"></p>
+                        <p class="description">{{ book.description | limitTo: 100 }}{{book.description.length > 100 ? '...' : ''}}</p>
 
                         <div class="footer">
                             <span class="price price-old"> &euro;{{ book.price + 1 }}</span>
