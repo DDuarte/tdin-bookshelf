@@ -17,7 +17,7 @@
             <div class="col-md-4" ng-repeat="book in latestBooks">
                 <div class="card card-product card-plain">
                     <div class="image">
-                        <a href="#">
+                        <a ui-sref="root.product({id: book.id})">
                             <img class="img-thumbnail" ng-src="{{ book.thumbnail }}" alt="..."/>
                         </a>
                     </div>
