@@ -20,6 +20,7 @@ angular.module('BookshelfApp.product', ['ui.router', 'BookshelfApp.root', 'ui.bo
         BookModel.getById($stateParams.id)
         .then(function(Book) {
             $scope.book = Book;
+            $scope.quantity = 1;
         })
         .catch(function(error) {
             SweetAlert.swal("Error", error, "error");
