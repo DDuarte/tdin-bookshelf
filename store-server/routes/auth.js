@@ -45,8 +45,10 @@ module.exports = function (server) {
             tags: ['api'],
             validate: {
                 payload: {
-                    email: Joi.string().email(),
-                    password: Joi.string()
+                    email: Joi.string().email().required(),
+                    password: Joi.string().required(),
+                    name: Joi.string().required(),
+                    address: Joi.string().required()
                 }
             },
             handler: function (request, reply) {
@@ -63,7 +65,9 @@ module.exports = function (server) {
 
                     Models.Customer.create({
                         email: request.payload.email,
-                        password: SHA256(request.payload.password).toString(CryptoJS.enc.Base64)
+                        password: SHA256(request.payload.password).toString(CryptoJS.enc.Base64),
+                        name: request.payload.name,
+                        address: request.payload.address
                     })
                     .then(function(NewCustomer) {
                         var ret = _.omit(NewCustomer.dataValues, 'password');
