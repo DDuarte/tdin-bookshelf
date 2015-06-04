@@ -71,6 +71,7 @@ module.exports = function (server) {
                     })
                     .then(function(NewCustomer) {
                         var ret = _.omit(NewCustomer.dataValues, 'password');
+                        ret.scope = 'customer';
                         ret = _.set(ret, 'token', Jwt.sign(ret, privateKey));
                         return reply(ret);
                     })
