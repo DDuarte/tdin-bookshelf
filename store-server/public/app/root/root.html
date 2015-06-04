@@ -14,6 +14,7 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav navbar-right">
+                <!-- Customer -->
                 <li ng-if="user && user.token && isCustomer" class="dropdown" dropdown on-toggle="toggled(open)">
                     <a href="#" class="dropdown-toggle" dropdown-toggle>
 
@@ -39,6 +40,25 @@
                         <i class="pe-7s-cart"></i><p>Basket</p>
                     </a>
                 </li>
+                <!-- /Customer -->
+
+                <!-- Clerk -->
+                <li ng-if="user && user.token && isClerk">
+                    <a ui-sref="root.addProduct">
+                        <i class="pe-7s-plus"></i> <p>Add book</p>
+                    </a>
+                </li>
+                <li ng-if="user && user.token && isClerk">
+                    <a>
+                        <i class="pe-7s-box2"></i> <p>Orders</p>
+                    </a>
+                </li>
+                <li ng-if="user && user.token && isClerk">
+                    <a ng-click="logout()">
+                        <i class="pe-7s-unlock"></i><p>Logout</p>
+                    </a>
+                </li>
+                <!-- /Clerk -->
                 <li ng-if="!user || !user.token">
                     <button ng-click="signin()" class="btn btn-round btn-default">Hello, sign in</button>
                 </li>
