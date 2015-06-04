@@ -8,11 +8,15 @@ var Joi = require('joi'),
     Config = require('config'),
     moment = require('moment'),
     context = require('rabbit.js').createContext(Config.rabbit.host),
-    push = context.socket('PUSH');
+    push = context.socket('PUSH'),
+    format = require('string-template'),
+    nodemailer = require('nodemailer');
 
 push.connect('orders', function() {
     console.log("Connected to push socket orders");
 });
+
+var transporter = nodemailer.createTransport(Config.email);
 
 module.exports = function(server) {
 
@@ -152,6 +156,14 @@ module.exports = function(server) {
                                             unfulfilledItems.push(book);
                                     });
 
+                                    // setup e-mail data with unicode symbols
+                                    var mailOptions = {
+                                        from: 'Bookshelf <no-reply@bookshelf.com>', // sender address
+                                        to: Customer.dataValues.email, // list of receivers
+                                        subject: format(Config.templates.orderCreation.title, {orderId: NewOrder.dataValues.id}),
+                                        text: format(Config.templates.orderCreation.body, {orderId: NewOrder.dataValues.id})
+                                    };
+
                                     if (unfulfilledItems.length == 0) {
                                         t.commit();
                                         Models.Order.update({
@@ -162,6 +174,14 @@ module.exports = function(server) {
                                                 id: NewOrder.dataValues.id
                                             }
                                         }).then(function() {
+
+                                            transporter.sendMail(mailOptions, function(error, info){
+                                                if(error){
+                                                    console.log("Error sending mail:", error);
+                                                }
+                                                console.log('Message sent: ' + info.response);
+                                            });
+
                                             return reply(NewOrder.dataValues);
                                         }).catch(function(error) {
                                             console.log("Error marking order as dispatched:", error);
@@ -180,6 +200,14 @@ module.exports = function(server) {
                                             })
                                         }), 'utf8');
                                         t.commit();
+
+                                        transporter.sendMail(mailOptions, function(error, info){
+                                            if(error){
+                                                console.log("Error sending mail:", error);
+                                            }
+                                            console.log('Message sent: ' + info.response);
+                                        });
+
                                         return reply(NewOrder.dataValues);
                                     }
                                 })
@@ -339,45 +367,75 @@ module.exports = function(server) {
                         if (Order.dataValues.state == 'dispatched')
                             return reply(Boom.badRequest("The order with the supplied id is already dispatched"));
 
-                            Models.Order.update({
-                                state: 'dispatched',
-                                dispatchDate: moment()
-                            }, {
+                            Models.Customer.findOne({
                                 where: {
-                                    id: request.params.orderId
+                                    id: Order.dataValues.CustomerId
                                 }
-                            },{ transaction: t })
-                            .then(function(NewOrder) {
-                                Order.getBooks()
-                                .then(function(Books) {
-                                    Promise.map(Books, function(Book) {
-                                        return Models.Book.update({
-                                            stock: Book.dataValues.stock - Book.dataValues.OrderBook.dataValues.quantity
-                                        }, {
-                                            where: {
-                                                id: Book.dataValues.id
-                                            }
-                                        }, {transaction: t});
-                                    }).then(function() {
-                                        t.commit();
-                                        return reply(NewOrder.dataValues);
-                                    }).catch(function(error) {
+                            }).then(function(Customer) {
+
+                                if (!Customer)
+                                    return reply(Boom.notFound("No Customer is associated with the order"));
+
+                                Models.Order.update({
+                                    state: 'dispatched',
+                                    dispatchDate: moment()
+                                }, {
+                                    where: {
+                                        id: request.params.orderId
+                                    }
+                                },{ transaction: t })
+                                    .then(function(NewOrder) {
+                                        Order.getBooks()
+                                            .then(function(Books) {
+                                                Promise.map(Books, function(Book) {
+                                                    return Models.Book.update({
+                                                        stock: Book.dataValues.stock - Book.dataValues.OrderBook.dataValues.quantity
+                                                    }, {
+                                                        where: {
+                                                            id: Book.dataValues.id
+                                                        }
+                                                    }, {transaction: t});
+                                                }).then(function() {
+                                                    t.commit();
+
+                                                    // setup e-mail data with unicode symbols
+                                                    var mailOptions = {
+                                                        from: 'Bookshelf <no-reply@bookshelf.com>', // sender address
+                                                        to: Customer.dataValues.email, // list of receivers
+                                                        subject: format(Config.templates.orderDispatch.title, {orderId: Order.dataValues.id}),
+                                                        text: format(Config.templates.orderDispatch.body, {orderId: Order.dataValues.id, orderDate: NewOrder.dataValues.dispatchDate})
+                                                    };
+
+                                                    transporter.sendMail(mailOptions, function(error, info){
+                                                        if(error){
+                                                            console.log("Error sending mail:", error);
+                                                        }
+                                                        console.log('Message sent: ' + info.response);
+                                                    });
+
+                                                    return reply(NewOrder.dataValues);
+                                                }).catch(function(error) {
+                                                    console.log("Error:", error);
+                                                    t.rollback();
+                                                    return reply(Boom.badImplementation("Internal server error"));
+                                                });
+                                            })
+                                            .catch(function(error) {
+                                                console.log("Error:", error);
+                                                t.rollback();
+                                                return reply(Boom.badImplementation("Internal server error"));
+                                            })
+                                    })
+                                    .catch(function(error) {
                                         console.log("Error:", error);
                                         t.rollback();
                                         return reply(Boom.badImplementation("Internal server error"));
                                     });
-                                })
-                                .catch(function(error) {
-                                    console.log("Error:", error);
-                                    t.rollback();
-                                    return reply(Boom.badImplementation("Internal server error"));
-                                })
-                            })
-                            .catch(function(error) {
+
+                            }).catch(function(error) {
                                 console.log("Error:", error);
-                                t.rollback();
                                 return reply(Boom.badImplementation("Internal server error"));
-                            })
+                            });
                     })
                     .catch(function(error) {
                         console.log("Error:", error);

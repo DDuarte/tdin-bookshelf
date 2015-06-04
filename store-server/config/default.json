@@ -9,6 +9,23 @@
       "port": 5432
     }
   },
+  "email": {
+    "service": "Gmail",
+    "auth": {
+      "user": "meshdevfeup@gmail.com",
+      "pass": "B4nanaB4nana"
+    }
+  },
+  "templates": {
+    "orderCreation": {
+        "title": "Bookshelf: New Order (#{orderId})",
+        "body": "You have created a new order.\n\nID: {orderId}\n\nOrder details: http://localhost:8000/#/myOrders/{orderId}\n\nThanks for your preference."
+    },
+    "orderDispatch": {
+      "title": "Bookshelf: Order dispatch (#{orderId})",
+      "body": "Your order has been dispatched.\n\nID: {orderId}\n\n Date: {orderDate}\n\nOrder details: http://localhost:8000/#/myOrders/{orderId}\n\nThanks for your preference."
+    }
+  },
   "rabbit": {
     "host": "amqp://-UjhSQW2:I7wUztYvmR2CRNt8YYKDzvFs9QuwP_E5@furry-laburnum-34.bigwig.lshift.net:10596/ZDeYcPlGqzB3"
   },
