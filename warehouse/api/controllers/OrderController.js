@@ -29,7 +29,7 @@ module.exports = {
       };
 
       request({
-        url: 'http://c7361349.ngrok.io/api/orders/' + order.storeOrderId,
+        url: 'http://localhost:8000/api/orders/' + order.storeOrderId,
         method: 'PATCH',
         json: requestData
       }, function (error, response, body) {
