@@ -9,7 +9,8 @@ Books sale platform
 - PostgreSQL (http://www.postgresql.org/)
 - RabbitMQ (https://www.rabbitmq.com/) Store
 
-## Store1.	Edit store-server/config/default.json (namely database access and email account).
+## Store
+1.	Edit store-server/config/default.json (namely database access and email account).
 2.	cd store-server
 3.	npm install
 4.	cd public && bower install
